@@ -37,7 +37,7 @@ export default function Home() {
     });
   }, []);
 
-  const addMoreCard = async (title, description, listId) => {
+  const addMoreCard = async (title, description, imageUrl, listId) => {
     if (!title) {
       return;
     }
@@ -46,6 +46,7 @@ export default function Home() {
       id: newCardId,
       title,
       description,
+      imageUrl
     };
     const listRef = doc(db, "lists", listId);
 

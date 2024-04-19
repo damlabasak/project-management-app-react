@@ -1,6 +1,9 @@
 import React, { useContext, useState } from "react";
 import Button from 'react-bootstrap/Button';
 import storeApi from "../../utils/storeApi";
+import { storage } from "../../firebase";
+import { ref, uploadBytes, getDownloadURL } from "firebase/storage";
+import { doc } from "firebase/firestore";
 
 import "./styles.scss";
 
@@ -8,6 +11,7 @@ export default function InputCard({ setOpen, listId, type }) {
   const { addMoreCard, addMoreList } = useContext(storeApi);
   const [title, setTitle] = useState("");
   const [description, setDescription] = useState("");
+  const [image, setImage] = useState(null);
 
   const handleOnChangeForTitle = (e) => {
     setTitle(e.target.value);
@@ -17,14 +21,29 @@ export default function InputCard({ setOpen, listId, type }) {
     setDescription(e.target.value);
   };
 
-  const handleBtnConfirm = () => {
+  const handleOnChangeForImage = (e) => {
+    if (e.target.files[0]) {
+      setImage(e.target.files[0]);
+    }
+  };
+
+  const handleBtnConfirm = async () => {
+    let imageUrl = "";
+
+    if (image) {
+      const imageRef = ref(storage, `images/${listId}/${doc.id}_${image.name}`);
+      await uploadBytes(imageRef, image);
+      imageUrl = await getDownloadURL(imageRef);
+    }
+
     if (type === "card") {
-      addMoreCard(title, description, listId);
+      addMoreCard(title, description, imageUrl, listId);
     } else {
       addMoreList(title);
     }
     setOpen(false);
     setTitle("");
+    setImage(null);
     setDescription("");
 };
 
@@ -43,12 +62,21 @@ export default function InputCard({ setOpen, listId, type }) {
           autoFocus
         />
         {type === "card" && (
-          <textarea
-            onChange={handleOnChangeForDescription}
-            value={description}
-            className="input-text card-description"
-            placeholder="Enter a description of this card..."
-          />
+          <>
+            <textarea
+              onChange={handleOnChangeForDescription}
+              value={description}
+              className="input-text card-description"
+              placeholder="Enter a description of this card..."
+            />
+            <div className="image-upload">
+              <input
+                type="file"
+                onChange={handleOnChangeForImage}
+                accept="image/*"
+              />
+            </div>
+          </>
         )}
         
       </div>
