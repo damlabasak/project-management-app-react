@@ -1,5 +1,5 @@
 import React, { useContext, useState } from "react";
-import Button from 'react-bootstrap/Button'; // Doğru şekilde Button bileşenini içe aktarın
+import Button from 'react-bootstrap/Button';
 import storeApi from "../../utils/storeApi";
 
 import "./styles.scss";
@@ -7,28 +7,34 @@ import "./styles.scss";
 export default function InputCard({ setOpen, listId, type }) {
   const { addMoreCard, addMoreList } = useContext(storeApi);
   const [title, setTitle] = useState("");
+  const [description, setDescription] = useState("");
 
-  const handleOnChange = (e) => {
+  const handleOnChangeForTitle = (e) => {
     setTitle(e.target.value);
+  };
+
+  const handleOnChangeForDescription = (e) => {
+    setDescription(e.target.value);
   };
 
   const handleBtnConfirm = () => {
     if (type === "card") {
-      addMoreCard(title, listId);
+      addMoreCard(title, description, listId);
     } else {
       addMoreList(title);
     }
     setOpen(false);
     setTitle("");
-  };
+    setDescription("");
+};
 
   return (
     <div className="input-card">
       <div className="input-card-container">
         <textarea
-          onChange={handleOnChange}
+          onChange={handleOnChangeForTitle}
           value={title}
-          className="input-text"
+          className="input-text card-title"
           placeholder={
             type === "card"
               ? "Enter a title of this card..."
@@ -36,6 +42,15 @@ export default function InputCard({ setOpen, listId, type }) {
           }
           autoFocus
         />
+        {type === "card" && (
+          <textarea
+            onChange={handleOnChangeForDescription}
+            value={description}
+            className="input-text card-description"
+            placeholder="Enter a description of this card..."
+          />
+        )}
+        
       </div>
       <div className="confirm">
         <Button variant="success" className="button-confirm" onClick={handleBtnConfirm}>
@@ -44,6 +59,7 @@ export default function InputCard({ setOpen, listId, type }) {
         <Button variant="danger" className="button-cancel"
           onClick={() => {
             setTitle("");
+            setDescription("");
             setOpen(false);
           }}
         >

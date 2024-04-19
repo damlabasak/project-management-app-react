@@ -37,7 +37,7 @@ export default function Home() {
     });
   }, []);
 
-  const addMoreCard = async (title, listId) => {
+  const addMoreCard = async (title, description, listId) => {
     if (!title) {
       return;
     }
@@ -45,6 +45,7 @@ export default function Home() {
     const newCard = {
       id: newCardId,
       title,
+      description,
     };
     const listRef = doc(db, "lists", listId);
 
@@ -206,7 +207,6 @@ export default function Home() {
                 </div>
                 {provided.placeholder}
               </div>
-              <div>notes</div>
             </div>
           )}
         </Droppable>
