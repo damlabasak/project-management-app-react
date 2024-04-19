@@ -1,5 +1,5 @@
 import React, { useContext, useState } from "react";
-import { Button } from 'react-bootstrap';
+import Button from 'react-bootstrap/Button'; // Doğru şekilde Button bileşenini içe aktarın
 import storeApi from "../../utils/storeApi";
 
 import "./styles.scss";
@@ -38,11 +38,10 @@ export default function InputCard({ setOpen, listId, type }) {
         />
       </div>
       <div className="confirm">
-        <Button className="button-confirm" onClick={handleBtnConfirm}>
+        <Button variant="success" className="button-confirm" onClick={handleBtnConfirm}>
           OK
         </Button>
-        <Button
-          className="button-cancel"
+        <Button variant="danger" className="button-cancel"
           onClick={() => {
             setTitle("");
             setOpen(false);

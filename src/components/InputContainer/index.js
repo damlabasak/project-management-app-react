@@ -1,24 +1,18 @@
 import React, { useState } from "react";
-
-import InputCard from "../InputCard";
 import { Button } from 'react-bootstrap';
+import InputModal from "../Modal/index";
 import "./styles.scss";
 
-export default function InputContainer({ listId, type }) {
+export default function InputContainer({ listId, type, listTitle }) {
   const [open, setOpen] = useState(false);
 
   return (
-    <div className="input-container">
-      <div className="container" style={{ display: open ? 'block' : 'none' }}>
-        <InputCard setOpen={setOpen} listId={listId} type={type} />
-      </div>
-      <div className="container" style={{ display: !open ? 'block' : 'none' }}>
-        <div className="input-content">
-          <Button onClick={() => setOpen(!open)}>
-            {type === "card" ? "+ Add another card" : "+ Add another list"}
-          </Button>
-        </div>
-      </div>
-    </div>
+    <div className="input-container ">
+    <Button onClick={() => setOpen(true)}>
+      {type === "card" ? "+ Add another card" : "+ Add another list"}
+    </Button>
+
+    <InputModal show={open} onHide={() => setOpen(false)} type={type} listId={listId} listTitle={listTitle} />
+  </div>
   );  
 }

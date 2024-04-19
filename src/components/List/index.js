@@ -8,6 +8,8 @@ import InputContainer from "../InputContainer";
 import "./styles.scss";
 
 export default function List({ list, index }) {
+  console.log({list});
+
   return (
     <Draggable draggableId={list.id} index={index}>
       {(provided) => (
@@ -37,7 +39,7 @@ export default function List({ list, index }) {
                 )}
               </Droppable>
             </div>
-            <InputContainer listId={list.id} type="card" />
+            <InputContainer listId={list.id} listTitle={list.title} type="card" />
           </div>
         </div>
       )}

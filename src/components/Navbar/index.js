@@ -9,6 +9,7 @@ const Navbar = () => {
       <div>
         <LibraryAddCheckIcon/>
         <h1>Project Management App</h1>
+
       </div>
     </div>
   </nav>
