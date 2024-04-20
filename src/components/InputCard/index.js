@@ -11,7 +11,8 @@ export default function InputCard({ setOpen, listId, type }) {
   const { addMoreCard, addMoreList } = useContext(storeApi);
   const [title, setTitle] = useState("");
   const [description, setDescription] = useState("");
-  const [image, setImage] = useState(null);
+  const [files, setFiles] = useState(null);
+  const [dueDate, setDueDate] = useState(""); // Yeni tarih girişi için state tanımı
 
   const handleOnChangeForTitle = (e) => {
     setTitle(e.target.value);
@@ -21,31 +22,42 @@ export default function InputCard({ setOpen, listId, type }) {
     setDescription(e.target.value);
   };
 
-  const handleOnChangeForImage = (e) => {
-    if (e.target.files[0]) {
-      setImage(e.target.files[0]);
+  const handleOnChangeForFiles = (e) => {
+    const files = e.target.files;
+    if (files.length > 0) {
+      const filesArray = Array.from(files);
+      setFiles(filesArray);
     }
   };
 
+  const handleOnChangeForDueDate = (e) => {
+    setDueDate(e.target.value);
+  };
+  
   const handleBtnConfirm = async () => {
-    let imageUrl = "";
-
-    if (image) {
-      const imageRef = ref(storage, `images/${listId}/${doc.id}_${image.name}`);
-      await uploadBytes(imageRef, image);
-      imageUrl = await getDownloadURL(imageRef);
+    let filesUrls = [];
+  
+    if (files && files.length > 0) {
+      for (let i = 0; i < files.length; i++) {
+        const currentFile = files[i];
+        const fileRef = ref(storage, `files/${listId}/${doc.id}_${currentFile.name}`);
+        await uploadBytes(fileRef, currentFile);
+        const fileUrl = await getDownloadURL(fileRef);
+        filesUrls.push(fileUrl);
+      }
     }
-
+  
     if (type === "card") {
-      addMoreCard(title, description, imageUrl, listId);
+      addMoreCard(title, description, filesUrls, dueDate, listId);
     } else {
       addMoreList(title);
     }
     setOpen(false);
     setTitle("");
-    setImage(null);
+    setFiles(null);
     setDescription("");
-};
+    setDueDate("");
+  };
 
   return (
     <div className="input-card">
@@ -69,13 +81,21 @@ export default function InputCard({ setOpen, listId, type }) {
               className="input-text card-description"
               placeholder="Enter a description of this card..."
             />
-            <div className="image-upload">
+            <div className="files-upload">
               <input
                 type="file"
-                onChange={handleOnChangeForImage}
-                accept="image/*"
+                onChange={handleOnChangeForFiles}
+                multiple
               />
             </div>
+            <h6 className="due-date">Due Date</h6>
+            <input
+              type="date"
+              value={dueDate}
+              onChange={handleOnChangeForDueDate}
+              className="input-text card-due-date"
+              placeholder="Enter due date..."
+            />
           </>
         )}
         
