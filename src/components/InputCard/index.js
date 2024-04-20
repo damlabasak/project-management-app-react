@@ -35,7 +35,6 @@ export default function InputCard({ setOpen, listId, type, onSave }) {
   };
 
   const handleOnChangeForLabels = (selectedOptions) => {
-    console.log(selectedOptions)
     setSelectedLabels(selectedOptions);
   };
 
@@ -44,29 +43,30 @@ export default function InputCard({ setOpen, listId, type, onSave }) {
   };
   
   const handleBtnConfirm = async () => {
-    let filesUrls = [];
-  
+    let filesData = [];
+    
     if (files && files.length > 0) {
       for (let i = 0; i < files.length; i++) {
         const currentFile = files[i];
         const fileRef = ref(storage, `files/${listId}/${doc.id}_${currentFile.name}`);
         await uploadBytes(fileRef, currentFile);
         const fileUrl = await getDownloadURL(fileRef);
-        filesUrls.push(fileUrl);
+  
+        const fileType = currentFile.type;
+        filesData.push({ url: fileUrl, type: fileType });
       }
     }
-
-    let selectedLabelsValues = [];
   
+    let selectedLabelsValues = [];
+    
     if (selectedLabels && selectedLabels.length > 0) {
       for (let i = 0; i < selectedLabels.length; i++) {
         selectedLabelsValues.push(selectedLabels[i].value);
       }
-      console.log(selectedLabelsValues)
     }
-
+  
     if (type === "card") {
-      addMoreCard(title, description, filesUrls, dueDate, selectedLabelsValues, listId);
+      addMoreCard(title, description, filesData, dueDate, selectedLabelsValues, listId);
     } else {
       addMoreList(title);
     }
@@ -77,8 +77,9 @@ export default function InputCard({ setOpen, listId, type, onSave }) {
     setDueDate("");
     setSelectedLabels(null);
     
-    onSave({ title, description, filesUrls, dueDate, selectedLabelsValues });
+    onSave({ title, description, filesData, dueDate, selectedLabelsValues });
   };
+  
 
   const colourStyles = {
     control: (styles) => ({ ...styles, backgroundColor: 'white' }),
@@ -174,7 +175,6 @@ export default function InputCard({ setOpen, listId, type, onSave }) {
             </div>
             <Select
               closeMenuOnSelect={false}
-              defaultValue={[colourOptions[0], colourOptions[1]]}
               onChange={handleOnChangeForLabels}
               isMulti
               options={colourOptions}

@@ -37,7 +37,7 @@ export default function Home() {
     });
   }, []);
 
-  const addMoreCard = async (title, description, filesUrl, dueDate, selectedLabelsValues, listId) => {
+  const addMoreCard = async (title, description, filesData, dueDate, selectedLabelsValues, listId) => {
     if (!title) {
       return;
     }
@@ -46,7 +46,7 @@ export default function Home() {
       id: newCardId,
       title,
       description,
-      filesUrl,
+      filesData,
       dueDate,
       selectedLabelsValues
     };
@@ -123,8 +123,6 @@ export default function Home() {
   const onDragEnd = async (result) => {
     const { destination, source, draggableId, type } = result;
 
-    console.log(destination, source, draggableId, type);
-
     if (!destination) {
       return;
     }
@@ -166,7 +164,6 @@ export default function Home() {
         (card) => card.id === draggableId
       )[0];
 
-      console.log(sourceList, destinationList);
       const sourceListRef = doc(db, "lists", source.droppableId);
 
       sourceList.cards.splice(source.index, 1);

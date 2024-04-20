@@ -1,0 +1,51 @@
+.modal-title {
+    display: inline-flex;
+    grid-gap: 1rem;
+    align-items: center;
+}
+
+.files-preview-title {
+    display: inline-flex;
+    grid-gap: 1rem;
+}
+
+.files-preview {
+    width: 100%;
+    display: inline-flex;
+    height: 150px;
+    grid-gap: 20px;
+    overflow: scroll;
+
+    .file {
+        height: 100px;
+
+        img, iframe {
+            height: 100%;
+        }
+
+        .file-actions {
+            align-items: center;
+            display: grid;
+
+            .open-file {
+                font-size: 13px;
+                margin-top: 10px;
+    
+                svg {
+                    margin-left: 10px;
+                    width: 13px;
+                }
+            }
+        }
+    }
+}
+
+.due-date {
+    display: inline-flex;
+    grid-gap: 1rem;
+}
+
+.card-description {
+    display: inline-flex;
+    grid-gap: 1rem;
+}
