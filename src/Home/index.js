@@ -131,6 +131,29 @@ export default function Home() {
     });
   };
 
+  const deleteCardFile = async (fileIndex, listId, cardId) => {
+    const listRef = doc(db, "lists", listId);
+
+    lists.forEach(async (list) => {
+      if (list.id === listId) {
+        list.cards.forEach(async (card) => {
+          if (card.id === cardId) {
+            card.filesData.splice(fileIndex, 1);
+            await updateDoc(listRef, {
+              cards: list.cards.map((c) => {
+                if (c.id === cardId) {
+                  return card;
+                }
+                return c;
+              }),
+            });
+          }
+        });
+      }
+      return list;
+    });
+  };
+
   const addMoreList = async (title) => {
     if (!title) {
       return;
@@ -229,6 +252,7 @@ export default function Home() {
         updateCardTitle,
         updateCardDescription,
         updateCardDueDate,
+        deleteCardFile,
         deleteList,
       }}
     >

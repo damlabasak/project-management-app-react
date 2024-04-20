@@ -3,9 +3,10 @@ import { Modal, Button } from "react-bootstrap";
 import FilePreview from "../FilePreview";
 import AttachmentRoundedIcon from '@mui/icons-material/AttachmentRounded';
 import OpenInNewRoundedIcon from '@mui/icons-material/OpenInNewRounded';
+import DeleteOutlineRoundedIcon from '@mui/icons-material/DeleteOutlineRounded';
 import ViewStreamRoundedIcon from '@mui/icons-material/ViewStreamRounded';
 import WbIncandescentRoundedIcon from '@mui/icons-material/WbIncandescentRounded';
-import CalendarMonthRoundedIcon from '@mui/icons-material/CalendarMonthRounded';
+import QueryBuilderRoundedIcon from '@mui/icons-material/QueryBuilderRounded';
 import GrayLine from "../GrayLine/index";
 import storeApi from "../../utils/storeApi";
 import "./styles.scss";
@@ -17,8 +18,10 @@ export default function CardDetailModal({ show, onHide, card, listId, index }) {
   const [newDescription, setNewDescription] = useState(card.description);
   const [openDueDateInput, setOpenDueDateInput] = useState(false);
   const [newDueDate, setNewDueDate] = useState(card.dueDate);
+  const [updatedFiles, setUpdatedFiles] = useState(card.filesData);
 
-  const { updateCardTitle, updateCardDescription, updateCardDueDate } = useContext(storeApi);
+
+  const { updateCardTitle, updateCardDescription, updateCardDueDate, deleteCardFile } = useContext(storeApi);
 
   const handleTitleOnBlur = () => {
     updateCardTitle(newTitle, index, listId);
@@ -39,9 +42,15 @@ export default function CardDetailModal({ show, onHide, card, listId, index }) {
     window.open(url, '_blank');
   };
 
+  const handleDeleteFile = (fileIndex) => {
+    deleteCardFile(fileIndex, listId, card.id);
+    const updatedFiles = card.filesData.filter((file, index) => index !== fileIndex);
+    setUpdatedFiles(updatedFiles);
+  };
+
   return (
     <Modal show={show} onHide={onHide}>
-      <Modal.Header closeButton>
+      <Modal.Header>
         <Modal.Title>
           <ViewStreamRoundedIcon />
           <h3>
@@ -116,7 +125,7 @@ export default function CardDetailModal({ show, onHide, card, listId, index }) {
         )}
         {openDueDateInput ? (
           <div className="due-date">
-            <CalendarMonthRoundedIcon />
+            <QueryBuilderRoundedIcon />
             <input
               type="date"
               value={newDueDate}
@@ -130,7 +139,7 @@ export default function CardDetailModal({ show, onHide, card, listId, index }) {
             {card?.dueDate && (
               <>
                 <div className="due-date">
-                  <CalendarMonthRoundedIcon />
+                  <QueryBuilderRoundedIcon />
                   <p onClick={() => setOpenDueDateInput(true)}>Due Date: {card.dueDate}</p>
                 </div>
                 <GrayLine />
@@ -138,7 +147,7 @@ export default function CardDetailModal({ show, onHide, card, listId, index }) {
             )}
           </>
         )}
-        {card?.filesData && (
+        {card?.filesData && card.filesData.length > 0 && (
           <>
             <div className="files-preview-title">
               <AttachmentRoundedIcon />
@@ -147,15 +156,24 @@ export default function CardDetailModal({ show, onHide, card, listId, index }) {
             <div className="files-preview">
               {card?.filesData.map((file, index) => (
                 <div className="file" key={index}>
+                  <div className="file-actions">
+                    <Button
+                        variant="light"
+                        className="open-file"
+                        onClick={() => handleOpenLink(file?.url)}
+                      >
+                        Open
+                      <OpenInNewRoundedIcon />
+                    </Button>
+                  </div>
                   <FilePreview fileUrl={file?.url} fileType={file?.type} />
                   <div className="file-actions">
                     <Button
                       variant="light"
-                      className="open-file"
-                      onClick={() => handleOpenLink(file?.url)}
+                      className="delete-file"
+                      onClick={() => handleDeleteFile(index)}
                     >
-                      Open
-                      <OpenInNewRoundedIcon />
+                      <DeleteOutlineRoundedIcon />
                     </Button>
                   </div>
                 </div>

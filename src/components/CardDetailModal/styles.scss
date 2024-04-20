@@ -23,7 +23,7 @@
 .files-preview {
     width: 100%;
     display: inline-flex;
-    height: 150px;
+    height: 200px;
     grid-gap: 20px;
     overflow: scroll;
 
@@ -46,6 +46,12 @@
                 svg {
                     margin-left: 10px;
                     width: 13px;
+                }
+            }
+
+            .delete-file {
+                svg {
+                    fill: red;
                 }
             }
         }
