@@ -18,6 +18,23 @@
   
         resize: none;
       }
+
+      .priority {
+        select option[value="red"] {
+          background-color: #ff0000;
+
+        }
+
+        select option[value="yellow"] {
+          background-color: #ffe600;
+
+        }
+
+        select option[value="green"] {
+          background-color: #00f508;
+
+        }
+      }
     }
   
     .confirm {

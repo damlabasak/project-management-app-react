@@ -2,6 +2,7 @@ import React, { useContext, useState } from "react";
 
 import TextareaAutosize from "react-textarea-autosize";
 import DeleteOutlineIcon from '@mui/icons-material/DeleteOutline';
+import EditIcon from '@mui/icons-material/Edit';
 import { Draggable } from "react-beautiful-dnd";
 
 import storeApi from "../../utils/storeApi";
@@ -45,18 +46,22 @@ export default function Card({ card, index, listId }) {
                 autoFocus
               />
             ) : (
-              <div
-                onClick={() => setOpen(!open)}
-                className="card-title-container"
-              >
-                <p>{card.title}</p>
-                <Button
-                  onClick={() => {
-                    removeCard(index, listId, card.id);
-                  }}
-                >
-                  <DeleteOutlineIcon />
-                </Button>
+              <div className="card-title-container">
+                <p onClick={() => setOpen(!open)}>{card.title}</p>
+                <div className="icons">
+                  <Button
+                    onClick={() => {
+                      removeCard(index, listId, card.id);
+                    }}
+                  >
+                    <DeleteOutlineIcon />
+                  </Button>
+                  <Button
+                    onClick={() => setOpen(!open)}
+                  >
+                    <EditIcon />
+                  </Button>
+                </div>
               </div>
             )}
           </div>

@@ -12,7 +12,8 @@ export default function InputCard({ setOpen, listId, type }) {
   const [title, setTitle] = useState("");
   const [description, setDescription] = useState("");
   const [files, setFiles] = useState(null);
-  const [dueDate, setDueDate] = useState(""); // Yeni tarih girişi için state tanımı
+  const [dueDate, setDueDate] = useState("");
+  const [priority, setPriority] = useState(""); // State for priority
 
   const handleOnChangeForTitle = (e) => {
     setTitle(e.target.value);
@@ -33,6 +34,10 @@ export default function InputCard({ setOpen, listId, type }) {
   const handleOnChangeForDueDate = (e) => {
     setDueDate(e.target.value);
   };
+
+  const handlePriorityChange = (e) => {
+    setPriority(e.target.value);
+  };
   
   const handleBtnConfirm = async () => {
     let filesUrls = [];
@@ -48,7 +53,7 @@ export default function InputCard({ setOpen, listId, type }) {
     }
   
     if (type === "card") {
-      addMoreCard(title, description, filesUrls, dueDate, listId);
+      addMoreCard(title, description, filesUrls, dueDate, listId, priority); // Passing priority to addMoreCard
     } else {
       addMoreList(title);
     }
@@ -57,10 +62,11 @@ export default function InputCard({ setOpen, listId, type }) {
     setFiles(null);
     setDescription("");
     setDueDate("");
+    setPriority("");
   };
 
   return (
-    <div className="input-card">
+    <div className={`input-card ${priority ? `priority-${priority}` : ""}`}>
       <div className="input-card-container">
         <textarea
           onChange={handleOnChangeForTitle}
@@ -88,14 +94,25 @@ export default function InputCard({ setOpen, listId, type }) {
                 multiple
               />
             </div>
-            <h6 className="due-date">Due Date</h6>
-            <input
-              type="date"
-              value={dueDate}
-              onChange={handleOnChangeForDueDate}
-              className="input-text card-due-date"
-              placeholder="Enter due date..."
-            />
+            <div className="due-date">
+              <h6 className="due-date-title">Due Date</h6>
+              <input
+                type="date"
+                value={dueDate}
+                onChange={handleOnChangeForDueDate}
+                className="input-text card-due-date"
+                placeholder="Enter due date..."
+              />
+            </div>
+            <div className="priority">
+              <label>Label:</label>
+              <select value={priority} onChange={handlePriorityChange}>
+                <option value="">Select label</option>
+                <option value="red">High (Red)</option>
+                <option value="yellow">Medium (Yellow)</option>
+                <option value="green">Low (Green)</option>
+              </select>
+            </div>
           </>
         )}
         
