@@ -37,7 +37,7 @@ export default function Home() {
     });
   }, []);
 
-  const addMoreCard = async (title, description, filesUrl, dueDate, listId) => {
+  const addMoreCard = async (title, description, filesUrl, dueDate, selectedLabelsValues, listId) => {
     if (!title) {
       return;
     }
@@ -47,7 +47,8 @@ export default function Home() {
       title,
       description,
       filesUrl,
-      dueDate
+      dueDate,
+      selectedLabelsValues
     };
     const listRef = doc(db, "lists", listId);
 

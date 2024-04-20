@@ -4,7 +4,10 @@ import storeApi from "../../utils/storeApi";
 import { storage } from "../../firebase";
 import { ref, uploadBytes, getDownloadURL } from "firebase/storage";
 import { doc } from "firebase/firestore";
+import chroma from 'chroma-js';
 
+import { colourOptions } from '../../utils/labelColorOptions';
+import Select from 'react-select';
 import "./styles.scss";
 
 export default function InputCard({ setOpen, listId, type, onSave }) {
@@ -13,7 +16,7 @@ export default function InputCard({ setOpen, listId, type, onSave }) {
   const [description, setDescription] = useState("");
   const [files, setFiles] = useState(null);
   const [dueDate, setDueDate] = useState("");
-  const [priority, setPriority] = useState("");
+  const [selectedLabels, setSelectedLabels] = useState(null);
 
   const handleOnChangeForTitle = (e) => {
     setTitle(e.target.value);
@@ -31,12 +34,13 @@ export default function InputCard({ setOpen, listId, type, onSave }) {
     }
   };
 
-  const handleOnChangeForDueDate = (e) => {
-    setDueDate(e.target.value);
+  const handleOnChangeForLabels = (selectedOptions) => {
+    console.log(selectedOptions)
+    setSelectedLabels(selectedOptions);
   };
 
-  const handlePriorityChange = (e) => {
-    setPriority(e.target.value);
+  const handleOnChangeForDueDate = (e) => {
+    setDueDate(e.target.value);
   };
   
   const handleBtnConfirm = async () => {
@@ -51,9 +55,18 @@ export default function InputCard({ setOpen, listId, type, onSave }) {
         filesUrls.push(fileUrl);
       }
     }
+
+    let selectedLabelsValues = [];
   
+    if (selectedLabels && selectedLabels.length > 0) {
+      for (let i = 0; i < selectedLabels.length; i++) {
+        selectedLabelsValues.push(selectedLabels[i].value);
+      }
+      console.log(selectedLabelsValues)
+    }
+
     if (type === "card") {
-      addMoreCard(title, description, filesUrls, dueDate, listId, priority);
+      addMoreCard(title, description, filesUrls, dueDate, selectedLabelsValues, listId);
     } else {
       addMoreList(title);
     }
@@ -62,13 +75,66 @@ export default function InputCard({ setOpen, listId, type, onSave }) {
     setFiles(null);
     setDescription("");
     setDueDate("");
-    setPriority("");
+    setSelectedLabels(null);
     
-    onSave({ title, description, filesUrls, dueDate, priority });
+    onSave({ title, description, filesUrls, dueDate, selectedLabelsValues });
   };
 
+  const colourStyles = {
+    control: (styles) => ({ ...styles, backgroundColor: 'white' }),
+    option: (styles, { data, isDisabled, isFocused, isSelected }) => {
+      const color = chroma(data.color);
+      return {
+        ...styles,
+        backgroundColor: isDisabled
+          ? undefined
+          : isSelected
+          ? data.color
+          : isFocused
+          ? color.alpha(0.1).css()
+          : undefined,
+        color: isDisabled
+          ? '#ccc'
+          : isSelected
+          ? chroma.contrast(color, 'white') > 2
+            ? 'white'
+            : 'black'
+          : data.color,
+        cursor: isDisabled ? 'not-allowed' : 'default',
+  
+        ':active': {
+          ...styles[':active'],
+          backgroundColor: !isDisabled
+            ? isSelected
+              ? data.color
+              : color.alpha(0.3).css()
+            : undefined,
+        },
+      };
+    },
+    multiValue: (styles, { data }) => {
+      const color = chroma(data.color);
+      return {
+        ...styles,
+        backgroundColor: color.alpha(0.1).css(),
+      };
+    },
+    multiValueLabel: (styles, { data }) => ({
+      ...styles,
+      color: data.color,
+    }),
+    multiValueRemove: (styles, { data }) => ({
+      ...styles,
+      color: data.color,
+      ':hover': {
+        backgroundColor: data.color,
+        color: 'white',
+      },
+    }),
+  };
+  
   return (
-    <div className={`input-card ${priority ? `priority-${priority}` : ""}`}>
+    <div className={"input-card"}>
       <div className="input-card-container">
         <textarea
           onChange={handleOnChangeForTitle}
@@ -106,15 +172,14 @@ export default function InputCard({ setOpen, listId, type, onSave }) {
                 placeholder="Enter due date..."
               />
             </div>
-            <div className="priority">
-              <label>Label:</label>
-              <select value={priority} onChange={handlePriorityChange}>
-                <option value="">Select label</option>
-                <option value="red">High (Red)</option>
-                <option value="yellow">Medium (Yellow)</option>
-                <option value="green">Low (Green)</option>
-              </select>
-            </div>
+            <Select
+              closeMenuOnSelect={false}
+              defaultValue={[colourOptions[0], colourOptions[1]]}
+              onChange={handleOnChangeForLabels}
+              isMulti
+              options={colourOptions}
+              styles={colourStyles}
+            />
           </>
         )}
         
