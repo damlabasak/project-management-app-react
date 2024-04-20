@@ -1,6 +1,6 @@
 import React, { useState } from "react";
 import { Button } from 'react-bootstrap';
-import InputModal from "../Modal/index";
+import InputModal from "../AddNewItemModal/index";
 import "./styles.scss";
 
 export default function InputContainer({ listId, type, listTitle }) {

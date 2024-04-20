@@ -4,6 +4,17 @@
     align-items: center;
 }
 
+.selected-labels {
+    display: flex;
+    grid-gap: 10px;
+
+    .selected-label {
+        width: fit-content;
+        padding: 3px 10px;
+        border-radius: 5px;
+    }    
+}
+
 .files-preview-title {
     display: inline-flex;
     grid-gap: 1rem;
@@ -18,6 +29,7 @@
 
     .file {
         height: 100px;
+        min-width: 90px;
 
         img, iframe {
             height: 100%;

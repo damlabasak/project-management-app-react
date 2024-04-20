@@ -10,7 +10,7 @@ import { colourOptions } from '../../utils/labelColorOptions';
 import Select from 'react-select';
 import "./styles.scss";
 
-export default function InputCard({ setOpen, listId, type, onSave }) {
+export default function InputCard({ setOpen, listId, type/* , onSave */ }) {
   const { addMoreCard, addMoreList } = useContext(storeApi);
   const [title, setTitle] = useState("");
   const [description, setDescription] = useState("");
@@ -35,7 +35,13 @@ export default function InputCard({ setOpen, listId, type, onSave }) {
   };
 
   const handleOnChangeForLabels = (selectedOptions) => {
-    setSelectedLabels(selectedOptions);
+    if (selectedOptions.length > 0) {
+      setSelectedLabels(selectedOptions.map(option => ({
+        value: option.value,
+        color: option.color,
+        label: option.label
+      })));
+    }
   };
 
   const handleOnChangeForDueDate = (e) => {
@@ -57,16 +63,19 @@ export default function InputCard({ setOpen, listId, type, onSave }) {
       }
     }
   
-    let selectedLabelsValues = [];
+    let selectedLabelsData = [];
     
     if (selectedLabels && selectedLabels.length > 0) {
       for (let i = 0; i < selectedLabels.length; i++) {
-        selectedLabelsValues.push(selectedLabels[i].value);
-      }
+        const currentLabel = selectedLabels[i];
+        selectedLabelsData.push({value: currentLabel.value,
+          color: currentLabel.color,
+          label: currentLabel.label})
+      } 
     }
   
     if (type === "card") {
-      addMoreCard(title, description, filesData, dueDate, selectedLabelsValues, listId);
+      addMoreCard(title, description, filesData, dueDate, selectedLabelsData, listId);
     } else {
       addMoreList(title);
     }
@@ -77,7 +86,7 @@ export default function InputCard({ setOpen, listId, type, onSave }) {
     setDueDate("");
     setSelectedLabels(null);
     
-    onSave({ title, description, filesData, dueDate, selectedLabelsValues });
+    //onSave({ title, description, filesData, dueDate, selectedLabelsData });
   };
   
 
@@ -192,6 +201,9 @@ export default function InputCard({ setOpen, listId, type, onSave }) {
           onClick={() => {
             setTitle("");
             setDescription("");
+            setFiles(null);
+            setDueDate("");
+            setSelectedLabels(null);
             setOpen(false);
           }}
         >
