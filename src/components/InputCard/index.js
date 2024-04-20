@@ -168,6 +168,7 @@ export default function InputCard({ setOpen, listId, type/* , onSave */ }) {
             <div className="files-upload">
               <input
                 type="file"
+                accept="image/*,.pdf"
                 onChange={handleOnChangeForFiles}
                 multiple
               />
