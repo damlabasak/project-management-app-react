@@ -94,6 +94,8 @@ export default function Card({ card, index, listId }) {
             show={showDetailModal}
             onHide={closeDetailModal}
             card={card}
+            listId={listId}
+            index={index}
           />
         </div>
       )}

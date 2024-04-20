@@ -91,6 +91,46 @@ export default function Home() {
     });
   };
 
+  const updateCardDescription = (description, index, listId, cardId) => {
+    const listRef = doc(db, "lists", listId);
+
+    lists.forEach(async (list) => {
+      if (list.id === listId) {
+        list.cards[index].description = description;
+        await updateDoc(listRef, {
+          cards: list.cards.map((card) => {
+            if (card.id === cardId) {
+              card.description = description;
+              return card;
+            }
+            return card;
+          }),
+        });
+      }
+      return list;
+    });
+  };
+
+  const updateCardDueDate = (dueDate, index, listId, cardId) => {
+    const listRef = doc(db, "lists", listId);
+
+    lists.forEach(async (list) => {
+      if (list.id === listId) {
+        list.cards[index].dueDate = dueDate;
+        await updateDoc(listRef, {
+          cards: list.cards.map((card) => {
+            if (card.id === cardId) {
+              card.dueDate = dueDate;
+              return card;
+            }
+            return card;
+          }),
+        });
+      }
+      return list;
+    });
+  };
+
   const addMoreList = async (title) => {
     if (!title) {
       return;
@@ -187,6 +227,8 @@ export default function Home() {
         updateListTitle,
         removeCard,
         updateCardTitle,
+        updateCardDescription,
+        updateCardDueDate,
         deleteList,
       }}
     >
