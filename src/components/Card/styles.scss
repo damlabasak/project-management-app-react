@@ -35,17 +35,26 @@
   
       button {
         padding: 0.5rem 0.5rem 0 0;
-  
         background: none;
         border: none;
         cursor: pointer;
-  
-        svg {
-          opacity: 0;
-          transition: color 0.2s, opacity 0.2s;
-  
-          &:hover {
-            color: #e22bba;
+        color: black;
+
+        &.btn-remove-card {
+          svg {
+            fill: red;
+          }
+        }
+
+        &.btn-edit-card-title {
+          svg {
+            fill: rgb(1, 181, 1);
+          }
+        }
+
+        &.btn-open-detail {
+          svg {
+            fill: rgb(0, 71, 201);
           }
         }
       }

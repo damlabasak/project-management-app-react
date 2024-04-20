@@ -7,7 +7,7 @@ import "./styles.scss";
 export default function Title({ title, listId }) {
   const [openOptions, setOpenOptions] = useState(false);
   const { deleteList } = useContext(storeApi);
-  const ref = useRef(null); // Referans oluştur
+  const ref = useRef(null);
 
   useEffect(() => {
     const handleClickOutside = (event) => {
@@ -16,10 +16,8 @@ export default function Title({ title, listId }) {
       }
     };
 
-    // Event listener'ı ekle
     document.addEventListener('mousedown', handleClickOutside);
     return () => {
-      // Event listener'ı kaldır
       document.removeEventListener('mousedown', handleClickOutside);
     };
   }, [ref]);

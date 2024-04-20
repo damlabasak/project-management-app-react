@@ -7,13 +7,13 @@ import { doc } from "firebase/firestore";
 
 import "./styles.scss";
 
-export default function InputCard({ setOpen, listId, type }) {
+export default function InputCard({ setOpen, listId, type, onSave }) {
   const { addMoreCard, addMoreList } = useContext(storeApi);
   const [title, setTitle] = useState("");
   const [description, setDescription] = useState("");
   const [files, setFiles] = useState(null);
   const [dueDate, setDueDate] = useState("");
-  const [priority, setPriority] = useState(""); // State for priority
+  const [priority, setPriority] = useState("");
 
   const handleOnChangeForTitle = (e) => {
     setTitle(e.target.value);
@@ -53,7 +53,7 @@ export default function InputCard({ setOpen, listId, type }) {
     }
   
     if (type === "card") {
-      addMoreCard(title, description, filesUrls, dueDate, listId, priority); // Passing priority to addMoreCard
+      addMoreCard(title, description, filesUrls, dueDate, listId, priority);
     } else {
       addMoreList(title);
     }
@@ -63,6 +63,8 @@ export default function InputCard({ setOpen, listId, type }) {
     setDescription("");
     setDueDate("");
     setPriority("");
+    
+    onSave({ title, description, filesUrls, dueDate, priority });
   };
 
   return (
