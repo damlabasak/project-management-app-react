@@ -60,6 +60,11 @@
           }
         }
 
+        .react-datepicker-wrapper {
+          margin-left: 2.5rem;
+          margin-top: 1rem;
+        }
+
         .card-due-date {
           margin-left: 2.5rem;
           width: auto;
@@ -68,6 +73,11 @@
         svg {
           fill: red;
           margin-right: 1rem;
+        }
+
+        .gray-line {
+          width: unset;
+          margin-left: 2.5rem;
         }
       }
 
@@ -123,6 +133,7 @@
 
         .select-label {
           margin-top: 1rem;
+          margin-left: 2.5rem;
         }
       }
     }

@@ -9,7 +9,7 @@ export default function InputContainer({ listId, type, listTitle }) {
   return (
     <div className="input-container ">
     <Button onClick={() => setOpen(true)}>
-      {type === "card" ? "+ Add another card" : "+ Add another list"}
+      {type === "card" ? "+ Add a card" : "+ Add a list"}
     </Button>
 
     <InputModal show={open} onHide={() => setOpen(false)} type={type} listId={listId} listTitle={listTitle} />

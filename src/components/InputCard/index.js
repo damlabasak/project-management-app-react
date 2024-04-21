@@ -5,20 +5,20 @@ import { storage } from "../../firebase";
 import { ref, uploadBytes, getDownloadURL } from "firebase/storage";
 import { doc } from "firebase/firestore";
 import chroma from 'chroma-js';
-import { FilePond, registerPlugin } from 'react-filepond';
-import 'filepond/dist/filepond.min.css';
-
+import { FilePond } from 'react-filepond';
 import AttachmentRoundedIcon from '@mui/icons-material/AttachmentRounded';
 import TocRoundedIcon from '@mui/icons-material/TocRounded';
 import WbIncandescentRoundedIcon from '@mui/icons-material/WbIncandescentRounded';
 import MoreTimeIcon from '@mui/icons-material/MoreTime';
 import BookmarkRoundedIcon from '@mui/icons-material/BookmarkRounded';
-
+import DatePicker from "react-datepicker";
 import GrayLine from "../GrayLine/index";
 
 import { colourOptions } from '../../utils/labelColorOptions';
 import Select from 'react-select';
 import "./styles.scss";
+import 'filepond/dist/filepond.min.css';
+import "react-datepicker/dist/react-datepicker.css";
 
 export default function InputCard({ setOpen, listId, type/* , onSave */ }) {
   const { addMoreCard, addMoreList } = useContext(storeApi);
@@ -44,8 +44,20 @@ export default function InputCard({ setOpen, listId, type/* , onSave */ }) {
     setSelectedLabels(selectedOptions);
   };
 
-  const handleOnChangeForDueDate = (e) => {
-    setDueDate(e.target.value);
+  function formatDate(inputDate) {
+    const dateObject = new Date(inputDate);
+  
+    const year = dateObject.getFullYear();
+    const month = String(dateObject.getMonth() + 1).padStart(2, '0');
+    const day = String(dateObject.getDate()).padStart(2, '0');
+  
+    const formattedDate = `${year}-${month}-${day}`;
+  
+    return formattedDate;
+  }
+
+  const handleOnChangeForDueDate = (date) => {
+    setDueDate(formatDate(date));
   };
   
   const handleBtnConfirm = async () => {
@@ -180,17 +192,17 @@ export default function InputCard({ setOpen, listId, type/* , onSave */ }) {
               <GrayLine/>
               </div>
               <div className="due-date">
-                  <div className="flex-container due-date-title">
-                  <MoreTimeIcon />
-                      <p>Due Date</p>
-                  </div>
-                  <input
-                    type="date"
-                    value={dueDate}
-                    onChange={handleOnChangeForDueDate}
-                    className="input-text card-due-date"
-                    placeholder="Enter due date..."
-                  />
+                <div className="flex-container due-date-title">
+                <MoreTimeIcon />
+                    <p>Due Date</p>
+                </div>
+                <DatePicker
+                  selected={dueDate}
+                  onChange={handleOnChangeForDueDate}
+                  dateFormat="yyyy-MM-dd"
+                  placeholderText=" Enter due date..."
+                />
+              <GrayLine/>
               </div>
               <div className="labels">
                 <div className="flex-container labels-title">
