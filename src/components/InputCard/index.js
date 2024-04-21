@@ -6,6 +6,14 @@ import { ref, uploadBytes, getDownloadURL } from "firebase/storage";
 import { doc } from "firebase/firestore";
 import chroma from 'chroma-js';
 
+import AttachmentRoundedIcon from '@mui/icons-material/AttachmentRounded';
+import TocRoundedIcon from '@mui/icons-material/TocRounded';
+import WbIncandescentRoundedIcon from '@mui/icons-material/WbIncandescentRounded';
+import MoreTimeIcon from '@mui/icons-material/MoreTime';
+import LabelImportantRoundedIcon from '@mui/icons-material/LabelImportantRounded';
+
+import GrayLine from "../GrayLine/index";
+
 import { colourOptions } from '../../utils/labelColorOptions';
 import Select from 'react-select';
 import "./styles.scss";
@@ -146,57 +154,77 @@ export default function InputCard({ setOpen, listId, type/* , onSave */ }) {
   return (
     <div className={"input-card"}>
       <div className="input-card-container">
-        <textarea
-          onChange={handleOnChangeForTitle}
-          value={title}
-          className="input-text card-title"
-          placeholder={
-            type === "card"
-              ? "Enter a title of this card..."
-              : "Enter list title"
-          }
-          autoFocus
-        />
-        {type === "card" && (
-          <>
-            <textarea
-              onChange={handleOnChangeForDescription}
-              value={description}
-              className="input-text card-description"
-              placeholder="Enter a description of this card..."
-            />
-            <div className="files-upload">
-              <input
-                type="file"
-                accept="image/*,.pdf"
-                onChange={handleOnChangeForFiles}
-                multiple
-              />
-            </div>
-            <div className="due-date">
-              <h6 className="due-date-title">Due Date</h6>
-              <input
-                type="date"
-                value={dueDate}
-                onChange={handleOnChangeForDueDate}
-                className="input-text card-due-date"
-                placeholder="Enter due date..."
-              />
-            </div>
-            <Select
-              closeMenuOnSelect={false}
-              onChange={handleOnChangeForLabels}
-              isMulti
-              options={colourOptions}
-              styles={colourStyles}
-            />
-          </>
-        )}
-        
+        <div className="flex-container title-container">
+          <TocRoundedIcon />
+          <textarea
+            onChange={handleOnChangeForTitle}
+            value={title}
+            className="input-text card-title"
+            placeholder={
+              type === "card"
+                ? "Enter a title of this card..."
+                : "Enter list title"
+            }
+            autoFocus
+          />
+        </div>
+          {type === "card" && (
+            <>
+              <div className="flex-container description-container">
+                <WbIncandescentRoundedIcon />
+                <textarea
+                  onChange={handleOnChangeForDescription}
+                  value={description}
+                  className="input-text card-description"
+                  placeholder="Enter a description of this card..."
+                />
+              </div>
+              <div className="files-upload">
+                <div className="flex-container files-upload-title">
+                  <AttachmentRoundedIcon />
+                  <p>Attachments</p>
+                </div>
+                <input
+                  type="file"
+                  accept="image/*,.pdf"
+                  onChange={handleOnChangeForFiles}
+                  multiple
+                />
+              </div>
+              <GrayLine/>
+              <div className="due-date">
+                  <div className="flex-container due-date-title">
+                  <MoreTimeIcon />
+                      <p>Due Date</p>
+                  </div>
+                  <input
+                    type="date"
+                    value={dueDate}
+                    onChange={handleOnChangeForDueDate}
+                    className="input-text card-due-date"
+                    placeholder="Enter due date..."
+                  />
+              </div>
+              <div className="labels">
+                <div className="flex-container labels-title">
+                  <LabelImportantRoundedIcon/>
+                  <p>Labels</p>
+                </div>
+                <Select
+                  className="select-label"
+                  closeMenuOnSelect={false}
+                  onChange={handleOnChangeForLabels}
+                  isMulti
+                  options={colourOptions}
+                  styles={colourStyles}
+                />
+              </div>
+            </>
+          )}
       </div>
       <div className="confirm">
         <Button variant="success" className="button-confirm" onClick={handleBtnConfirm}>
-          OK
+          SAVE
         </Button>
         <Button variant="danger" className="button-cancel"
           onClick={() => {

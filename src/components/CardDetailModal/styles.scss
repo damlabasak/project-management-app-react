@@ -1,12 +1,52 @@
-.modal-title {
+.modal-title.h4 {
     display: inline-flex;
     grid-gap: 1rem;
+    width: 100%;
     align-items: center;
+
+    svg {
+        width: 29px;
+        height: 29px;
+        margin-bottom: .5rem;
+    }
+
+    h3 {
+        width: 100%;
+        margin: 0;
+        display: flex;
+        font-size: 20px;
+        justify-content: space-between;
+
+        span {
+            font-size: 20px;
+            text-align: center;
+            display: contents;
+        }
+    }
+}
+
+.edit-btn {
+    background: unset;
+    border: unset;
+
+    &:hover,
+    &:focus,
+    &:active {
+        background-color: transparent !important;
+        color: inherit  !important;
+        border: none  !important;
+        outline: none  !important;
+    }
+
+    svg {
+        fill: #568203;
+    }
 }
 
 .selected-labels {
     display: flex;
     grid-gap: 10px;
+    justify-content: center;
 
     .selected-label {
         width: fit-content;
@@ -16,8 +56,13 @@
 }
 
 .files-preview-title {
+    width: 100%;
     display: inline-flex;
     grid-gap: 1rem;
+
+    svg  {
+        fill: #008E97;
+    }
 }
 
 .files-preview {
@@ -58,13 +103,47 @@
     }
 }
 
-.due-date {
-    display: inline-flex;
-    grid-gap: 1rem;
+.due-date-container {
+    align-items: center;
+
+    p {
+        margin: 0;
+    }
+
+    .due-date {
+        display: inline-flex;
+        grid-gap: 1rem;
+
+        svg {
+            fill: red;
+        }
+    }
+    
+    .duedate-edit {
+        float: right;
+    }
 }
 
-.card-description {
-    display: inline-flex;
-    grid-gap: 1rem;
-    width: 100%;
+.card-description-container {
+    display: flex;
+    justify-content: space-between;
+
+    .card-description {
+        display: inline-flex;
+        grid-gap: 1rem;
+        width: 100%;
+        align-items: center;
+
+        svg {
+            fill: #FFD700;
+        }
+
+        textarea {
+            width: 100%;
+        }
+
+        p {
+            margin: 0;
+        }
+    }
 }

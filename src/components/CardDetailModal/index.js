@@ -4,9 +4,10 @@ import FilePreview from "../FilePreview";
 import AttachmentRoundedIcon from '@mui/icons-material/AttachmentRounded';
 import OpenInNewRoundedIcon from '@mui/icons-material/OpenInNewRounded';
 import DeleteOutlineRoundedIcon from '@mui/icons-material/DeleteOutlineRounded';
-import ViewStreamRoundedIcon from '@mui/icons-material/ViewStreamRounded';
+import TocRoundedIcon from '@mui/icons-material/TocRounded';
 import WbIncandescentRoundedIcon from '@mui/icons-material/WbIncandescentRounded';
 import QueryBuilderRoundedIcon from '@mui/icons-material/QueryBuilderRounded';
+import EditIcon from '@mui/icons-material/Edit';
 import GrayLine from "../GrayLine/index";
 import storeApi from "../../utils/storeApi";
 import "./styles.scss";
@@ -52,7 +53,7 @@ export default function CardDetailModal({ show, onHide, card, listId, index }) {
     <Modal show={show} onHide={onHide}>
       <Modal.Header>
         <Modal.Title>
-          <ViewStreamRoundedIcon />
+          <TocRoundedIcon />
           <h3>
             {openTitleInput ? (
               <input
@@ -71,6 +72,10 @@ export default function CardDetailModal({ show, onHide, card, listId, index }) {
             ) : (
               <span onClick={() => setOpenTitleInput(true)}>{card?.title}</span>
             )}
+            
+            <Button className="edit-btn" onClick={() => setOpenTitleInput(!openTitleInput)}>
+              <EditIcon />
+            </Button>
           </h3>
         </Modal.Title>
       </Modal.Header>
@@ -113,14 +118,17 @@ export default function CardDetailModal({ show, onHide, card, listId, index }) {
         ) : (
           <>
             {card?.description && (
-              <>
+              <div className="card-description-container">
                 <div className="card-description">
                   <WbIncandescentRoundedIcon />
                   <p onClick={() => setOpenDescriptionInput(true)}>{card.description}</p>
                 </div>
-                <GrayLine />
-              </>
+                <Button className="edit-btn" onClick={() => setOpenDescriptionInput(!openDescriptionInput)}>
+                  <EditIcon />
+                </Button>
+              </div>
             )}
+            <GrayLine />
           </>
         )}
         {openDueDateInput ? (
@@ -137,13 +145,16 @@ export default function CardDetailModal({ show, onHide, card, listId, index }) {
         ) : (
           <>
             {card?.dueDate && (
-              <>
+              <div className="due-date-container">
                 <div className="due-date">
                   <QueryBuilderRoundedIcon />
                   <p onClick={() => setOpenDueDateInput(true)}>Due Date: {card.dueDate}</p>
                 </div>
+                <Button className="duedate-edit edit-btn" onClick={() => setOpenDueDateInput(!openDueDateInput)}>
+                  <EditIcon />
+                </Button>
                 <GrayLine />
-              </>
+              </div>
             )}
           </>
         )}
