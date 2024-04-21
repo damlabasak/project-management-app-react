@@ -10,7 +10,7 @@ import AttachmentRoundedIcon from '@mui/icons-material/AttachmentRounded';
 import TocRoundedIcon from '@mui/icons-material/TocRounded';
 import WbIncandescentRoundedIcon from '@mui/icons-material/WbIncandescentRounded';
 import MoreTimeIcon from '@mui/icons-material/MoreTime';
-import LabelImportantRoundedIcon from '@mui/icons-material/LabelImportantRounded';
+import BookmarkRoundedIcon from '@mui/icons-material/BookmarkRounded';
 
 import GrayLine from "../GrayLine/index";
 
@@ -58,6 +58,16 @@ export default function InputCard({ setOpen, listId, type/* , onSave */ }) {
   
   const handleBtnConfirm = async () => {
     let filesData = [];
+
+    if (title.length < 5 || title.length > 50) {
+      alert("Title must be between 5 and 50 characters.");
+      return;
+    }
+
+    if (description.length < 5 || title.length > 200) {
+      alert("Description must be between 5 and 200 characters.");
+      return;
+    }
     
     if (files && files.length > 0) {
       for (let i = 0; i < files.length; i++) {
@@ -207,7 +217,7 @@ export default function InputCard({ setOpen, listId, type/* , onSave */ }) {
               </div>
               <div className="labels">
                 <div className="flex-container labels-title">
-                  <LabelImportantRoundedIcon/>
+                  <BookmarkRoundedIcon/>
                   <p>Labels</p>
                 </div>
                 <Select
@@ -223,7 +233,7 @@ export default function InputCard({ setOpen, listId, type/* , onSave */ }) {
           )}
       </div>
       <div className="confirm">
-        <Button variant="success" className="button-confirm" onClick={handleBtnConfirm}>
+        <Button variant="success" className="button-confirm" onClick={handleBtnConfirm} >
           SAVE
         </Button>
         <Button variant="danger" className="button-cancel"

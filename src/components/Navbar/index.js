@@ -1,5 +1,5 @@
 import React from 'react'
-import LibraryAddCheckIcon from '@mui/icons-material/LibraryAddCheck';
+import WidgetsTwoToneIcon from '@mui/icons-material/WidgetsTwoTone';
 import "./styles.scss"
 
 const Navbar = () => {
@@ -7,7 +7,7 @@ const Navbar = () => {
     <nav>
     <div className='container'>
       <div>
-        <LibraryAddCheckIcon/>
+        <WidgetsTwoToneIcon/>
         <h1>Project Management App</h1>
 
       </div>

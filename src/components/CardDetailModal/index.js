@@ -50,7 +50,7 @@ export default function CardDetailModal({ show, onHide, card, listId, index }) {
   };
 
   return (
-    <Modal show={show} onHide={onHide} id="cardDetailModal">
+    <Modal show={show} onHide={onHide} id="cardDetailModal" size="lg">
       <Modal.Header>
         <Modal.Title>
           <TocRoundedIcon />

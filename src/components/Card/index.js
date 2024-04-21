@@ -2,8 +2,7 @@ import React, { useContext, useState } from "react";
 
 import TextareaAutosize from "react-textarea-autosize";
 import DeleteOutlineIcon from '@mui/icons-material/DeleteOutline';
-import EditIcon from '@mui/icons-material/Edit';
-import OpenWithIcon from '@mui/icons-material/OpenWith';
+import OpenInFullRoundedIcon from '@mui/icons-material/OpenInFullRounded';
 import { Draggable } from "react-beautiful-dnd";
 
 import storeApi from "../../utils/storeApi";
@@ -69,22 +68,17 @@ export default function Card({ card, index, listId }) {
                   {truncateText(card.title, 35)}
                 </p>
                 <div className="icons">
-                  <Button className="btn-remove-card"
+                  <Button className="btn-remove-card" title="Delete card"
                     onClick={() => {
                       removeCard(index, listId, card.id);
                     }}
                   >
                     <DeleteOutlineIcon />
                   </Button>
-                  <Button className="btn-edit-card-title"
-                    onClick={() => setOpen(!open)}
-                  >
-                    <EditIcon />
-                  </Button>
                   <Button className="btn-open-detail"
                     onClick={openDetailModal}
                   >
-                    <OpenWithIcon/>
+                    <OpenInFullRoundedIcon/>
                   </Button>
                 </div>
               </div>
