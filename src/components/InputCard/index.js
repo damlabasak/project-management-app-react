@@ -63,11 +63,6 @@ export default function InputCard({ setOpen, listId, type/* , onSave */ }) {
       alert("Title must be between 5 and 50 characters.");
       return;
     }
-
-    if (description.length < 5 || title.length > 200) {
-      alert("Description must be between 5 and 200 characters.");
-      return;
-    }
     
     if (files && files.length > 0) {
       for (let i = 0; i < files.length; i++) {
@@ -185,6 +180,7 @@ export default function InputCard({ setOpen, listId, type/* , onSave */ }) {
                 <textarea
                   onChange={handleOnChangeForDescription}
                   value={description}
+                  maxLength={200}
                   className="input-text card-description"
                   placeholder="Enter a description of this card..."
                 />

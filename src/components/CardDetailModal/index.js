@@ -72,6 +72,7 @@ export default function CardDetailModal({ show, onHide, card, listId, index }) {
             ) : (
               <span onClick={() => setOpenTitleInput(true)}>{card?.title}</span>
             )}
+            
             <Button className="edit-btn" onClick={() => setOpenTitleInput(!openTitleInput)}>
               <EditIcon />
             </Button>
@@ -99,23 +100,26 @@ export default function CardDetailModal({ show, onHide, card, listId, index }) {
           </>
         )}
         {openDescriptionInput ? (
-          <div className="card-description-container">
-            <div className="card-description">
-              <WbIncandescentRoundedIcon />
-              <textarea
-                value={newDescription}
-                onChange={(e) => setNewDescription(e.target.value)}
-                onBlur={handleDescriptionOnBlur}
-                onKeyPress={(e) => {
-                  if (e.key === "Enter") {
-                    handleDescriptionOnBlur(card.id);
-                  }
-                  return;
-                }}
-                autoFocus
-              />
+          <>
+            <div className="card-description-container">
+              <div className="card-description">
+                <WbIncandescentRoundedIcon />
+                <textarea
+                  value={newDescription}
+                  onChange={(e) => setNewDescription(e.target.value)}
+                  onBlur={handleDescriptionOnBlur}
+                  onKeyPress={(e) => {
+                    if (e.key === "Enter") {
+                      handleDescriptionOnBlur(card.id);
+                    }
+                    return;
+                  }}
+                  autoFocus
+                />
+              </div>
             </div>
-          </div>
+          <GrayLine />
+          </>
         ) : (
           <>
             {card?.description && (
@@ -144,6 +148,7 @@ export default function CardDetailModal({ show, onHide, card, listId, index }) {
                 autoFocus
               />
             </div>
+            <GrayLine />
           </div>
         ) : (
           <>
