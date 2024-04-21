@@ -1,15 +1,15 @@
 import React, { useContext, useState } from "react";
 import { Modal, Button } from "react-bootstrap";
-import { FilePond } from 'react-filepond';
+import { FilePond } from "react-filepond";
 import FilePreview from "../FilePreview";
-import AttachmentRoundedIcon from '@mui/icons-material/AttachmentRounded';
-import OpenInNewRoundedIcon from '@mui/icons-material/OpenInNewRounded';
-import DeleteOutlineRoundedIcon from '@mui/icons-material/DeleteOutlineRounded';
-import TocRoundedIcon from '@mui/icons-material/TocRounded';
-import WbIncandescentRoundedIcon from '@mui/icons-material/WbIncandescentRounded';
-import QueryBuilderRoundedIcon from '@mui/icons-material/QueryBuilderRounded';
-import ArrowDownwardRoundedIcon from '@mui/icons-material/ArrowDownwardRounded';
-import EditIcon from '@mui/icons-material/Edit';
+import AttachmentRoundedIcon from "@mui/icons-material/AttachmentRounded";
+import OpenInNewRoundedIcon from "@mui/icons-material/OpenInNewRounded";
+import DeleteOutlineRoundedIcon from "@mui/icons-material/DeleteOutlineRounded";
+import TocRoundedIcon from "@mui/icons-material/TocRounded";
+import WbIncandescentRoundedIcon from "@mui/icons-material/WbIncandescentRounded";
+import QueryBuilderRoundedIcon from "@mui/icons-material/QueryBuilderRounded";
+import ArrowDownwardRoundedIcon from "@mui/icons-material/ArrowDownwardRounded";
+import EditIcon from "@mui/icons-material/Edit";
 import GrayLine from "../GrayLine/index";
 import storeApi from "../../utils/storeApi";
 import { storage } from "../../firebase";
@@ -28,7 +28,13 @@ export default function CardDetailModal({ show, onHide, card, listId, index }) {
   const [updatedFiles, setUpdatedFiles] = useState(card.filesData);
   const [selectedFiles, setSelectedFiles] = useState([]);
 
-  const { updateCardTitle, updateCardDescription, updateCardDueDate, deleteCardFile, addCardFile } = useContext(storeApi);
+  const {
+    updateCardTitle,
+    updateCardDescription,
+    updateCardDueDate,
+    deleteCardFile,
+    addCardFile,
+  } = useContext(storeApi);
 
   const handleTitleOnBlur = () => {
     updateCardTitle(newTitle, index, listId);
@@ -46,12 +52,14 @@ export default function CardDetailModal({ show, onHide, card, listId, index }) {
   };
 
   const handleOpenLink = (url) => {
-    window.open(url, '_blank');
+    window.open(url, "_blank");
   };
 
   const handleDeleteFile = (fileIndex) => {
     deleteCardFile(fileIndex, listId, card.id);
-    const updatedFiles = card.filesData.filter((file, index) => index !== fileIndex);
+    const updatedFiles = card.filesData.filter(
+      (file, index) => index !== fileIndex
+    );
     setUpdatedFiles(updatedFiles);
   };
 
@@ -63,7 +71,10 @@ export default function CardDetailModal({ show, onHide, card, listId, index }) {
     const filesData = [];
     for (let i = 0; i < selectedFiles.length; i++) {
       const currentFile = selectedFiles[i].file;
-      const fileRef = ref(storage, `files/${listId}/${doc.id}_${currentFile.name}`);
+      const fileRef = ref(
+        storage,
+        `files/${listId}/${doc.id}_${currentFile.name}`
+      );
       await uploadBytes(fileRef, currentFile);
       const fileUrl = await getDownloadURL(fileRef);
       filesData.push({ url: fileUrl, type: currentFile.type });
@@ -95,8 +106,11 @@ export default function CardDetailModal({ show, onHide, card, listId, index }) {
             ) : (
               <span onClick={() => setOpenTitleInput(true)}>{card?.title}</span>
             )}
-            
-            <Button className="edit-btn" onClick={() => setOpenTitleInput(!openTitleInput)}>
+
+            <Button
+              className="edit-btn"
+              onClick={() => setOpenTitleInput(!openTitleInput)}
+            >
               <EditIcon />
             </Button>
           </h3>
@@ -123,66 +137,73 @@ export default function CardDetailModal({ show, onHide, card, listId, index }) {
           </>
         )}
         {openDescriptionInput || !card?.description ? (
-  <>
-    <div className="card-description-container">
-      <div className="card-description">
-        <WbIncandescentRoundedIcon />
-        <textarea
-          value={newDescription}
-          onChange={(e) => setNewDescription(e.target.value)}
-          onBlur={handleDescriptionOnBlur}
-          onKeyPress={(e) => {
-            if (e.key === "Enter") {
-              handleDescriptionOnBlur(card.id);
-            }
-            return;
-          }}
-          autoFocus
-        />
-      </div>
-    </div>
-    <GrayLine />
-  </>
-) : (
-  <>
-    {card?.description && (
-      <>
-        <div className="card-description-container">
-          <div className="card-description">
-            <WbIncandescentRoundedIcon />
-            <p onClick={() => setOpenDescriptionInput(true)}>{card.description}</p>
-          </div>
-          <Button className="edit-btn" onClick={() => setOpenDescriptionInput(!openDescriptionInput)}>
-            <EditIcon />
-          </Button>
-        </div>
-        <GrayLine />
-      </>
-    )}
-    {!card?.description && (
-      <>
-        <div className="card-description-container">
-          <div className="card-description">
-            <WbIncandescentRoundedIcon />
-            <textarea
-              value={newDescription}
-              onChange={(e) => setNewDescription(e.target.value)}
-              onBlur={handleDescriptionOnBlur}
-              onKeyPress={(e) => {
-                if (e.key === "Enter") {
-                  handleDescriptionOnBlur(card.id);
-                }
-                return;
-              }}
-              autoFocus
-            />
-          </div>
-        </div>
-        <GrayLine />
-      </>
-    )}
-  </>
-)}
+          <>
+            <div className="card-description-container">
+              <div className="card-description">
+                <WbIncandescentRoundedIcon />
+                <textarea
+                  value={newDescription}
+                  onChange={(e) => setNewDescription(e.target.value)}
+                  onBlur={handleDescriptionOnBlur}
+                  onKeyPress={(e) => {
+                    if (e.key === "Enter") {
+                      handleDescriptionOnBlur(card.id);
+                    }
+                    return;
+                  }}
+                  autoFocus
+                />
+              </div>
+            </div>
+            <GrayLine />
+          </>
+        ) : (
+          <>
+            {card?.description && (
+              <>
+                <div className="card-description-container">
+                  <div className="card-description">
+                    <WbIncandescentRoundedIcon />
+                    <p onClick={() => setOpenDescriptionInput(true)}>
+                      {card.description}
+                    </p>
+                  </div>
+                  <Button
+                    className="edit-btn"
+                    onClick={() =>
+                      setOpenDescriptionInput(!openDescriptionInput)
+                    }
+                  >
+                    <EditIcon />
+                  </Button>
+                </div>
+                <GrayLine />
+              </>
+            )}
+            {!card?.description && (
+              <>
+                <div className="card-description-container">
+                  <div className="card-description">
+                    <WbIncandescentRoundedIcon />
+                    <textarea
+                      value={newDescription}
+                      onChange={(e) => setNewDescription(e.target.value)}
+                      onBlur={handleDescriptionOnBlur}
+                      onKeyPress={(e) => {
+                        if (e.key === "Enter") {
+                          handleDescriptionOnBlur(card.id);
+                        }
+                        return;
+                      }}
+                      autoFocus
+                    />
+                  </div>
+                </div>
+                <GrayLine />
+              </>
+            )}
+          </>
+        )}
         {openDueDateInput ? (
           <div className="due-date-container">
             <div className="due-date">
@@ -203,9 +224,14 @@ export default function CardDetailModal({ show, onHide, card, listId, index }) {
               <div className="due-date-container">
                 <div className="due-date">
                   <QueryBuilderRoundedIcon />
-                  <p onClick={() => setOpenDueDateInput(true)}>Due Date: {card.dueDate}</p>
+                  <p onClick={() => setOpenDueDateInput(true)}>
+                    Due Date: {card.dueDate}
+                  </p>
                 </div>
-                <Button className="duedate-edit edit-btn" onClick={() => setOpenDueDateInput(!openDueDateInput)}>
+                <Button
+                  className="duedate-edit edit-btn"
+                  onClick={() => setOpenDueDateInput(!openDueDateInput)}
+                >
                   <EditIcon />
                 </Button>
                 <GrayLine />
@@ -218,53 +244,63 @@ export default function CardDetailModal({ show, onHide, card, listId, index }) {
           <p>Attachments</p>
         </div>
         <div className="files-preview">
-        {card?.filesData && card.filesData.length > 0 ? (
-          card.filesData.map((file, index) => (
-            <div className="file" key={index}>
-              <div className="file-actions">
-                <Button
-                  variant="light"
-                  className="open-file"
-                  onClick={() => handleOpenLink(file?.url)}
-                >
-                  Open
-                  <OpenInNewRoundedIcon />
-                </Button>
+          {card?.filesData && card.filesData.length > 0 ? (
+            card.filesData.map((file, index) => (
+              <div className="file" key={index}>
+                <div className="file-actions">
+                  <Button
+                    variant="light"
+                    className="open-file"
+                    onClick={() => handleOpenLink(file?.url)}
+                  >
+                    Open
+                    <OpenInNewRoundedIcon />
+                  </Button>
+                </div>
+                <FilePreview fileUrl={file?.url} fileType={file?.type} />
+                <div className="file-actions">
+                  <Button
+                    variant="light"
+                    className="delete-file"
+                    onClick={() => handleDeleteFile(index)}
+                  >
+                    <DeleteOutlineRoundedIcon />
+                  </Button>
+                </div>
               </div>
-              <FilePreview fileUrl={file?.url} fileType={file?.type} />
-              <div className="file-actions">
-                <Button
-                  variant="light"
-                  className="delete-file"
-                  onClick={() => handleDeleteFile(index)}
-                >
-                  <DeleteOutlineRoundedIcon />
-                </Button>
-              </div>
-            </div>
-          ))
-        ) : (
-          <p>There is no file uploaded</p>
-        )}
+            ))
+          ) : (
+            <p>There is no file uploaded</p>
+          )}
         </div>
-      <div className="info-for-upload-files">
-        <ArrowDownwardRoundedIcon/>
-          <p>Drag & drop files or browse, than click <span><strong>Upload</strong></span> button to upload new files</p>
-      </div>
-      <div className="upload-new-files">
-        <div className="files-upload">
-           <FilePond
-            files={selectedFiles}
-            allowMultiple={true}
-            onupdatefiles={handleFileInputChange}
-          />
+        <div className="info-for-upload-files">
+          <ArrowDownwardRoundedIcon />
+          <p>
+            Drag & drop files or browse, than click{" "}
+            <span>
+              <strong>Upload</strong>
+            </span>{" "}
+            button to upload new files
+          </p>
         </div>
-       <div className="confirm">
-          <Button variant="success" className="button-confirm" onClick={handleSaveFiles} >
-            Upload
-          </Button>
+        <div className="upload-new-files">
+          <div className="files-upload">
+            <FilePond
+              files={selectedFiles}
+              allowMultiple={true}
+              onupdatefiles={handleFileInputChange}
+            />
+          </div>
+          <div className="confirm">
+            <Button
+              variant="success"
+              className="button-confirm"
+              onClick={handleSaveFiles}
+            >
+              Upload
+            </Button>
+          </div>
         </div>
-      </div>
       </Modal.Body>
       <Modal.Footer>
         <Button variant="secondary" onClick={onHide}>
