@@ -1,5 +1,6 @@
 import React, { useContext, useState } from "react";
 import { Modal, Button } from "react-bootstrap";
+import { FilePond } from 'react-filepond';
 import FilePreview from "../FilePreview";
 import AttachmentRoundedIcon from '@mui/icons-material/AttachmentRounded';
 import OpenInNewRoundedIcon from '@mui/icons-material/OpenInNewRounded';
@@ -10,6 +11,10 @@ import QueryBuilderRoundedIcon from '@mui/icons-material/QueryBuilderRounded';
 import EditIcon from '@mui/icons-material/Edit';
 import GrayLine from "../GrayLine/index";
 import storeApi from "../../utils/storeApi";
+import { storage } from "../../firebase";
+import { ref, uploadBytes, getDownloadURL } from "firebase/storage";
+import { doc } from "firebase/firestore";
+
 import "./styles.scss";
 
 export default function CardDetailModal({ show, onHide, card, listId, index }) {
@@ -20,8 +25,9 @@ export default function CardDetailModal({ show, onHide, card, listId, index }) {
   const [openDueDateInput, setOpenDueDateInput] = useState(false);
   const [newDueDate, setNewDueDate] = useState(card.dueDate);
   const [updatedFiles, setUpdatedFiles] = useState(card.filesData);
+  const [selectedFiles, setSelectedFiles] = useState([]);
 
-  const { updateCardTitle, updateCardDescription, updateCardDueDate, deleteCardFile } = useContext(storeApi);
+  const { updateCardTitle, updateCardDescription, updateCardDueDate, deleteCardFile, addCardFile } = useContext(storeApi);
 
   const handleTitleOnBlur = () => {
     updateCardTitle(newTitle, index, listId);
@@ -46,6 +52,23 @@ export default function CardDetailModal({ show, onHide, card, listId, index }) {
     deleteCardFile(fileIndex, listId, card.id);
     const updatedFiles = card.filesData.filter((file, index) => index !== fileIndex);
     setUpdatedFiles(updatedFiles);
+  };
+
+  const handleFileInputChange = (files) => {
+    setSelectedFiles(files);
+  };
+
+  const handleSaveFiles = async () => {
+    const filesData = [];
+    for (let i = 0; i < selectedFiles.length; i++) {
+      const currentFile = selectedFiles[i].file;
+      const fileRef = ref(storage, `files/${listId}/${doc.id}_${currentFile.name}`);
+      await uploadBytes(fileRef, currentFile);
+      const fileUrl = await getDownloadURL(fileRef);
+      filesData.push({ url: fileUrl, type: currentFile.type });
+    }
+    addCardFile(filesData, listId, card.id);
+    setUpdatedFiles(filesData);
   };
 
   return (
@@ -168,39 +191,58 @@ export default function CardDetailModal({ show, onHide, card, listId, index }) {
           </>
         )}
         {card?.filesData && card.filesData.length > 0 && (
-          <>
-            <div className="files-preview-title">
-              <AttachmentRoundedIcon />
-              <p>Attachments</p>
-            </div>
-            <div className="files-preview">
-              {card?.filesData.map((file, index) => (
-                <div className="file" key={index}>
-                  <div className="file-actions">
-                    <Button
-                        variant="light"
-                        className="open-file"
-                        onClick={() => handleOpenLink(file?.url)}
-                      >
-                        Open
-                      <OpenInNewRoundedIcon />
-                    </Button>
-                  </div>
-                  <FilePreview fileUrl={file?.url} fileType={file?.type} />
-                  <div className="file-actions">
-                    <Button
-                      variant="light"
-                      className="delete-file"
-                      onClick={() => handleDeleteFile(index)}
-                    >
-                      <DeleteOutlineRoundedIcon />
-                    </Button>
-                  </div>
+        <>
+          <div className="files-preview-title">
+            <AttachmentRoundedIcon />
+            <p>Attachments</p>
+          </div>
+          <div className="files-preview">
+            {card?.filesData.map((file, index) => (
+              <div className="file" key={index}>
+                <div className="file-actions">
+                  <Button
+                    variant="light"
+                    className="open-file"
+                    onClick={() => handleOpenLink(file?.url)}
+                  >
+                    Open
+                    <OpenInNewRoundedIcon />
+                  </Button>
                 </div>
-              ))}
+                <FilePreview fileUrl={file?.url} fileType={file?.type} />
+                <div className="file-actions">
+                  <Button
+                    variant="light"
+                    className="delete-file"
+                    onClick={() => handleDeleteFile(index)}
+                  >
+                    <DeleteOutlineRoundedIcon />
+                  </Button>
+                </div>
+              </div>
+            ))}
+          </div>
+          <div className="upload-new-files">
+            <div className="files-upload">
+              <div className="flex-container files-upload-title">
+                <AttachmentRoundedIcon />
+                <p>Upload Files</p>
+              </div>
+              <FilePond
+                files={selectedFiles}
+                allowMultiple={true}
+                onupdatefiles={handleFileInputChange}
+              />
             </div>
-          </>
-        )}
+            <GrayLine />
+            <div className="confirm">
+              <Button variant="success" className="button-confirm" onClick={handleSaveFiles} >
+                Upload
+              </Button>
+            </div>
+          </div>
+        </>
+      )}
       </Modal.Body>
       <Modal.Footer>
         <Button variant="secondary" onClick={onHide}>

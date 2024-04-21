@@ -18,6 +18,7 @@ import {
   orderBy,
   query,
   updateDoc,
+  getDoc
 } from "firebase/firestore";
 
 export default function Home() {
@@ -154,6 +155,31 @@ export default function Home() {
     });
   };
 
+  const addCardFile = async (file, listId, cardId) => {
+    const listRef = doc(db, "lists", listId);
+    
+    const listSnap = await getDoc(listRef);
+    if (!listSnap.exists()) {
+      console.error("List not found");
+      return;
+    }
+    
+    const listData = listSnap.data();
+    const updatedCards = listData.cards.map((card) => {
+      if (card.id === cardId) {
+        return {
+          ...card,
+          filesData: [...card.filesData, ...file]
+        };
+      }
+      return card;
+    });
+    
+    await updateDoc(listRef, {
+      cards: updatedCards,
+    });
+  };
+
   const addMoreList = async (title) => {
     if (!title) {
       return;
@@ -253,6 +279,7 @@ export default function Home() {
         updateCardDescription,
         updateCardDueDate,
         deleteCardFile,
+        addCardFile,
         deleteList,
       }}
     >
