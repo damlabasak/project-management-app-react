@@ -18,7 +18,7 @@
       height: 100%;
       display: flex;
       justify-content: space-between;
-      align-items: flex-start;
+      align-items: center;
       font-size: 15px;
       transition: background-color 0.1s;
   
@@ -31,7 +31,6 @@
       }
   
       button {
-        padding: 0.5rem 0.5rem 0 0;
         background: none;
         border: none;
         cursor: pointer;

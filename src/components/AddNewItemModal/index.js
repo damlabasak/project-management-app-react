@@ -12,7 +12,7 @@ export default function InputModal({ show, onHide, type, listId, listTitle }) {
         <Modal.Title>
           <AddTaskIcon/>
           <h4>
-            Add {type === "card" ? `card for "${listTitle}" list` : "a new list"}
+            Add {type === "card" ? `card for '${listTitle}'` : "a new list"}
           </h4>
           </Modal.Title>
       </Modal.Header>
