@@ -12,5 +12,18 @@
         min-height: calc(100vh - 5rem);
         max-height: 300px;
         overflow-y: auto;
+
+        @media (max-width: 768px) {
+            display: grid;
+            grid-gap: 2rem;
+
+            .list-cards {
+                width: 100%;
+            }
+
+            .input-container.list {
+                width: 100%;
+            }
+        }
     }
 }

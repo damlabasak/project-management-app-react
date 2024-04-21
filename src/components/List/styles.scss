@@ -12,6 +12,10 @@
       overflow-x: auto;
       max-height: 55vh;
       padding: 0 1rem;
+
+      @media (max-width: 768px) {
+        max-height: 37vh;
+      }
     }
   
     .card-container {
