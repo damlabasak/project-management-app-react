@@ -21,7 +21,6 @@ export default function CardDetailModal({ show, onHide, card, listId, index }) {
   const [newDueDate, setNewDueDate] = useState(card.dueDate);
   const [updatedFiles, setUpdatedFiles] = useState(card.filesData);
 
-
   const { updateCardTitle, updateCardDescription, updateCardDueDate, deleteCardFile } = useContext(storeApi);
 
   const handleTitleOnBlur = () => {
@@ -123,17 +122,19 @@ export default function CardDetailModal({ show, onHide, card, listId, index }) {
         ) : (
           <>
             {card?.description && (
-              <div className="card-description-container">
-                <div className="card-description">
-                  <WbIncandescentRoundedIcon />
-                  <p onClick={() => setOpenDescriptionInput(true)}>{card.description}</p>
+              <>
+                <div className="card-description-container">
+                  <div className="card-description">
+                    <WbIncandescentRoundedIcon />
+                    <p onClick={() => setOpenDescriptionInput(true)}>{card.description}</p>
+                  </div>
+                  <Button className="edit-btn" onClick={() => setOpenDescriptionInput(!openDescriptionInput)}>
+                    <EditIcon />
+                  </Button>
                 </div>
-                <Button className="edit-btn" onClick={() => setOpenDescriptionInput(!openDescriptionInput)}>
-                  <EditIcon />
-                </Button>
-              </div>
+                <GrayLine />
+              </>
             )}
-            <GrayLine />
           </>
         )}
         {openDueDateInput ? (
@@ -198,7 +199,6 @@ export default function CardDetailModal({ show, onHide, card, listId, index }) {
                 </div>
               ))}
             </div>
-            <GrayLine />
           </>
         )}
       </Modal.Body>

@@ -1,4 +1,6 @@
 import React, { useContext, useState } from "react";
+import DatePicker from "react-datepicker";
+import Select from 'react-select';
 import Button from 'react-bootstrap/Button';
 import storeApi from "../../utils/storeApi";
 import { storage } from "../../firebase";
@@ -11,11 +13,9 @@ import TocRoundedIcon from '@mui/icons-material/TocRounded';
 import WbIncandescentRoundedIcon from '@mui/icons-material/WbIncandescentRounded';
 import MoreTimeIcon from '@mui/icons-material/MoreTime';
 import BookmarkRoundedIcon from '@mui/icons-material/BookmarkRounded';
-import DatePicker from "react-datepicker";
 import GrayLine from "../GrayLine/index";
-
 import { colourOptions } from '../../utils/labelColorOptions';
-import Select from 'react-select';
+
 import "./styles.scss";
 import 'filepond/dist/filepond.min.css';
 import "react-datepicker/dist/react-datepicker.css";
