@@ -22,4 +22,13 @@
           background-color: #bc79cb;
         }
       }
+
+      &.list {
+        width: 150px;
+
+        button {
+          height: 100px;
+          background-color: #4682B4;
+        }
+      }
   }

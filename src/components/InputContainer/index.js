@@ -7,7 +7,7 @@ export default function InputContainer({ listId, type, listTitle }) {
   const [open, setOpen] = useState(false);
 
   return (
-    <div className="input-container ">
+    <div className={`input-container ${type === "list" ? "list" : ""}`}>
     <Button onClick={() => setOpen(true)}>
       {type === "card" ? "+ Add a card" : "+ Add a list"}
     </Button>
