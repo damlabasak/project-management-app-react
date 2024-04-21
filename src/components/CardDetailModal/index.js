@@ -213,58 +213,58 @@ export default function CardDetailModal({ show, onHide, card, listId, index }) {
             )}
           </>
         )}
-        {card?.filesData && card.filesData.length > 0 && (
-        <>
-          <div className="files-preview-title">
-            <AttachmentRoundedIcon />
-            <p>Attachments</p>
-          </div>
-          <div className="files-preview">
-            {card?.filesData.map((file, index) => (
-              <div className="file" key={index}>
-                <div className="file-actions">
-                  <Button
-                    variant="light"
-                    className="open-file"
-                    onClick={() => handleOpenLink(file?.url)}
-                  >
-                    Open
-                    <OpenInNewRoundedIcon />
-                  </Button>
-                </div>
-                <FilePreview fileUrl={file?.url} fileType={file?.type} />
-                <div className="file-actions">
-                  <Button
-                    variant="light"
-                    className="delete-file"
-                    onClick={() => handleDeleteFile(index)}
-                  >
-                    <DeleteOutlineRoundedIcon />
-                  </Button>
-                </div>
+        <div className="files-preview-title">
+          <AttachmentRoundedIcon />
+          <p>Attachments</p>
+        </div>
+        <div className="files-preview">
+        {card?.filesData && card.filesData.length > 0 ? (
+          card.filesData.map((file, index) => (
+            <div className="file" key={index}>
+              <div className="file-actions">
+                <Button
+                  variant="light"
+                  className="open-file"
+                  onClick={() => handleOpenLink(file?.url)}
+                >
+                  Open
+                  <OpenInNewRoundedIcon />
+                </Button>
               </div>
-            ))}
-          </div>
-          <div className="info-for-upload-files">
-            <ArrowDownwardRoundedIcon/>
-            <p>Drag & drop files or browse, than click 'upload' button to upload new files</p>
-          </div>
-          <div className="upload-new-files">
-            <div className="files-upload">
-              <FilePond
-                files={selectedFiles}
-                allowMultiple={true}
-                onupdatefiles={handleFileInputChange}
-              />
+              <FilePreview fileUrl={file?.url} fileType={file?.type} />
+              <div className="file-actions">
+                <Button
+                  variant="light"
+                  className="delete-file"
+                  onClick={() => handleDeleteFile(index)}
+                >
+                  <DeleteOutlineRoundedIcon />
+                </Button>
+              </div>
             </div>
-            <div className="confirm">
-              <Button variant="success" className="button-confirm" onClick={handleSaveFiles} >
-                Upload
-              </Button>
-            </div>
-          </div>
-        </>
-      )}
+          ))
+        ) : (
+          <p>There is no file uploaded</p>
+        )}
+        </div>
+      <div className="info-for-upload-files">
+        <ArrowDownwardRoundedIcon/>
+          <p>Drag & drop files or browse, than click <span><strong>Upload</strong></span> button to upload new files</p>
+      </div>
+      <div className="upload-new-files">
+        <div className="files-upload">
+           <FilePond
+            files={selectedFiles}
+            allowMultiple={true}
+            onupdatefiles={handleFileInputChange}
+          />
+        </div>
+       <div className="confirm">
+          <Button variant="success" className="button-confirm" onClick={handleSaveFiles} >
+            Upload
+          </Button>
+        </div>
+      </div>
       </Modal.Body>
       <Modal.Footer>
         <Button variant="secondary" onClick={onHide}>
