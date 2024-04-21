@@ -122,45 +122,67 @@ export default function CardDetailModal({ show, onHide, card, listId, index }) {
             <GrayLine />
           </>
         )}
-        {openDescriptionInput ? (
-          <>
-            <div className="card-description-container">
-              <div className="card-description">
-                <WbIncandescentRoundedIcon />
-                <textarea
-                  value={newDescription}
-                  onChange={(e) => setNewDescription(e.target.value)}
-                  onBlur={handleDescriptionOnBlur}
-                  onKeyPress={(e) => {
-                    if (e.key === "Enter") {
-                      handleDescriptionOnBlur(card.id);
-                    }
-                    return;
-                  }}
-                  autoFocus
-                />
-              </div>
-            </div>
-          <GrayLine />
-          </>
-        ) : (
-          <>
-            {card?.description && (
-              <>
-                <div className="card-description-container">
-                  <div className="card-description">
-                    <WbIncandescentRoundedIcon />
-                    <p onClick={() => setOpenDescriptionInput(true)}>{card.description}</p>
-                  </div>
-                  <Button className="edit-btn" onClick={() => setOpenDescriptionInput(!openDescriptionInput)}>
-                    <EditIcon />
-                  </Button>
-                </div>
-                <GrayLine />
-              </>
-            )}
-          </>
-        )}
+        {openDescriptionInput || !card?.description ? (
+  <>
+    <div className="card-description-container">
+      <div className="card-description">
+        <WbIncandescentRoundedIcon />
+        <textarea
+          value={newDescription}
+          onChange={(e) => setNewDescription(e.target.value)}
+          onBlur={handleDescriptionOnBlur}
+          onKeyPress={(e) => {
+            if (e.key === "Enter") {
+              handleDescriptionOnBlur(card.id);
+            }
+            return;
+          }}
+          autoFocus
+        />
+      </div>
+    </div>
+    <GrayLine />
+  </>
+) : (
+  <>
+    {card?.description && (
+      <>
+        <div className="card-description-container">
+          <div className="card-description">
+            <WbIncandescentRoundedIcon />
+            <p onClick={() => setOpenDescriptionInput(true)}>{card.description}</p>
+          </div>
+          <Button className="edit-btn" onClick={() => setOpenDescriptionInput(!openDescriptionInput)}>
+            <EditIcon />
+          </Button>
+        </div>
+        <GrayLine />
+      </>
+    )}
+    {!card?.description && (
+      <>
+        <div className="card-description-container">
+          <div className="card-description">
+            <WbIncandescentRoundedIcon />
+            <textarea
+              value={newDescription}
+              onChange={(e) => setNewDescription(e.target.value)}
+              onBlur={handleDescriptionOnBlur}
+              onKeyPress={(e) => {
+                if (e.key === "Enter") {
+                  handleDescriptionOnBlur(card.id);
+                }
+                return;
+              }}
+              autoFocus
+            />
+          </div>
+        </div>
+        <GrayLine />
+      </>
+    )}
+  </>
+)}
         {openDueDateInput ? (
           <div className="due-date-container">
             <div className="due-date">
