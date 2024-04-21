@@ -5,6 +5,8 @@ import { storage } from "../../firebase";
 import { ref, uploadBytes, getDownloadURL } from "firebase/storage";
 import { doc } from "firebase/firestore";
 import chroma from 'chroma-js';
+import { FilePond, registerPlugin } from 'react-filepond';
+import 'filepond/dist/filepond.min.css';
 
 import AttachmentRoundedIcon from '@mui/icons-material/AttachmentRounded';
 import TocRoundedIcon from '@mui/icons-material/TocRounded';
@@ -22,7 +24,7 @@ export default function InputCard({ setOpen, listId, type/* , onSave */ }) {
   const { addMoreCard, addMoreList } = useContext(storeApi);
   const [title, setTitle] = useState("");
   const [description, setDescription] = useState("");
-  const [files, setFiles] = useState(null);
+  const [files, setFiles] = useState([]);
   const [dueDate, setDueDate] = useState("");
   const [selectedLabels, setSelectedLabels] = useState(null);
 
@@ -34,22 +36,12 @@ export default function InputCard({ setOpen, listId, type/* , onSave */ }) {
     setDescription(e.target.value);
   };
 
-  const handleOnChangeForFiles = (e) => {
-    const files = e.target.files;
-    if (files.length > 0) {
-      const filesArray = Array.from(files);
-      setFiles(filesArray);
-    }
+  const handleOnChangeForFiles = (files) => {
+    setFiles(files);
   };
 
   const handleOnChangeForLabels = (selectedOptions) => {
-    if (selectedOptions.length > 0) {
-      setSelectedLabels(selectedOptions.map(option => ({
-        value: option.value,
-        color: option.color,
-        label: option.label
-      })));
-    }
+    setSelectedLabels(selectedOptions);
   };
 
   const handleOnChangeForDueDate = (e) => {
@@ -57,36 +49,29 @@ export default function InputCard({ setOpen, listId, type/* , onSave */ }) {
   };
   
   const handleBtnConfirm = async () => {
-    let filesData = [];
-
     if (title.length < 5 || title.length > 50) {
       alert("Title must be between 5 and 50 characters.");
       return;
     }
-    
-    if (files && files.length > 0) {
-      for (let i = 0; i < files.length; i++) {
-        const currentFile = files[i];
-        const fileRef = ref(storage, `files/${listId}/${doc.id}_${currentFile.name}`);
-        await uploadBytes(fileRef, currentFile);
-        const fileUrl = await getDownloadURL(fileRef);
-  
-        const fileType = currentFile.type;
-        filesData.push({ url: fileUrl, type: fileType });
-      }
+
+    const filesData = [];
+    for (let i = 0; i < files.length; i++) {
+      const currentFile = files[i].file;
+      const fileRef = ref(storage, `files/${listId}/${doc.id}_${currentFile.name}`);
+      await uploadBytes(fileRef, currentFile);
+      const fileUrl = await getDownloadURL(fileRef);
+      filesData.push({ url: fileUrl, type: currentFile.type });
     }
-  
+
     let selectedLabelsData = [];
-    
     if (selectedLabels && selectedLabels.length > 0) {
-      for (let i = 0; i < selectedLabels.length; i++) {
-        const currentLabel = selectedLabels[i];
-        selectedLabelsData.push({value: currentLabel.value,
-          color: currentLabel.color,
-          label: currentLabel.label})
-      } 
+      selectedLabelsData = selectedLabels.map(label => ({
+        value: label.value,
+        color: label.color,
+        label: label.label
+      }));
     }
-  
+
     if (type === "card") {
       addMoreCard(title, description, filesData, dueDate, selectedLabelsData, listId);
     } else {
@@ -94,14 +79,11 @@ export default function InputCard({ setOpen, listId, type/* , onSave */ }) {
     }
     setOpen(false);
     setTitle("");
-    setFiles(null);
+    setFiles([]);
     setDescription("");
     setDueDate("");
     setSelectedLabels(null);
-    
-    //onSave({ title, description, filesData, dueDate, selectedLabelsData });
   };
-  
 
   const colourStyles = {
     control: (styles) => ({ ...styles, backgroundColor: 'white' }),
@@ -190,11 +172,10 @@ export default function InputCard({ setOpen, listId, type/* , onSave */ }) {
                   <AttachmentRoundedIcon />
                   <p>Attachments</p>
                 </div>
-                <input
-                  type="file"
-                  accept="image/*,.pdf"
-                  onChange={handleOnChangeForFiles}
-                  multiple
+                <FilePond
+                  files={files}
+                  allowMultiple={true}
+                  onupdatefiles={handleOnChangeForFiles}
                 />
               <GrayLine/>
               </div>
@@ -236,7 +217,7 @@ export default function InputCard({ setOpen, listId, type/* , onSave */ }) {
           onClick={() => {
             setTitle("");
             setDescription("");
-            setFiles(null);
+            setFiles([]);
             setDueDate("");
             setSelectedLabels(null);
             setOpen(false);
