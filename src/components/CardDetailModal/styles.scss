@@ -28,6 +28,10 @@
                 text-align: center;
                 display: contents;
             }
+
+            input {
+                width: 100% !important;
+            }
         }
     }
     
@@ -149,7 +153,7 @@
                 }
         
                 textarea {
-                    width: 100%;
+                    width: 100% !important;
                 }
         
                 p {

@@ -72,7 +72,6 @@ export default function CardDetailModal({ show, onHide, card, listId, index }) {
             ) : (
               <span onClick={() => setOpenTitleInput(true)}>{card?.title}</span>
             )}
-            
             <Button className="edit-btn" onClick={() => setOpenTitleInput(!openTitleInput)}>
               <EditIcon />
             </Button>
@@ -100,20 +99,22 @@ export default function CardDetailModal({ show, onHide, card, listId, index }) {
           </>
         )}
         {openDescriptionInput ? (
-          <div className="card-description">
-            <WbIncandescentRoundedIcon />
-            <textarea
-              value={newDescription}
-              onChange={(e) => setNewDescription(e.target.value)}
-              onBlur={handleDescriptionOnBlur}
-              onKeyPress={(e) => {
-                if (e.key === "Enter") {
-                  handleDescriptionOnBlur(card.id);
-                }
-                return;
-              }}
-              autoFocus
-            />
+          <div className="card-description-container">
+            <div className="card-description">
+              <WbIncandescentRoundedIcon />
+              <textarea
+                value={newDescription}
+                onChange={(e) => setNewDescription(e.target.value)}
+                onBlur={handleDescriptionOnBlur}
+                onKeyPress={(e) => {
+                  if (e.key === "Enter") {
+                    handleDescriptionOnBlur(card.id);
+                  }
+                  return;
+                }}
+                autoFocus
+              />
+            </div>
           </div>
         ) : (
           <>
@@ -132,15 +133,17 @@ export default function CardDetailModal({ show, onHide, card, listId, index }) {
           </>
         )}
         {openDueDateInput ? (
-          <div className="due-date">
-            <QueryBuilderRoundedIcon />
-            <input
-              type="date"
-              value={newDueDate}
-              onChange={(e) => setNewDueDate(e.target.value)}
-              onBlur={handleDueDateOnBlur}
-              autoFocus
-            />
+          <div className="due-date-container">
+            <div className="due-date">
+              <QueryBuilderRoundedIcon />
+              <input
+                type="date"
+                value={newDueDate}
+                onChange={(e) => setNewDueDate(e.target.value)}
+                onBlur={handleDueDateOnBlur}
+                autoFocus
+              />
+            </div>
           </div>
         ) : (
           <>
