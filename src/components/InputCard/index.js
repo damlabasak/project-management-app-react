@@ -190,8 +190,8 @@ export default function InputCard({ setOpen, listId, type/* , onSave */ }) {
                   onChange={handleOnChangeForFiles}
                   multiple
                 />
-              </div>
               <GrayLine/>
+              </div>
               <div className="due-date">
                   <div className="flex-container due-date-title">
                   <MoreTimeIcon />

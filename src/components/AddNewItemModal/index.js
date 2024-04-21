@@ -7,7 +7,7 @@ import "./styles.scss";
 
 export default function InputModal({ show, onHide, type, listId, listTitle }) {
   return (
-    <Modal show={show} onHide={onHide}>
+    <Modal show={show} onHide={onHide} id="addNewItemModal">
       <Modal.Header>
         <Modal.Title>
           <AddTaskIcon/>
