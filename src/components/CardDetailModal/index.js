@@ -8,6 +8,7 @@ import DeleteOutlineRoundedIcon from '@mui/icons-material/DeleteOutlineRounded';
 import TocRoundedIcon from '@mui/icons-material/TocRounded';
 import WbIncandescentRoundedIcon from '@mui/icons-material/WbIncandescentRounded';
 import QueryBuilderRoundedIcon from '@mui/icons-material/QueryBuilderRounded';
+import ArrowDownwardRoundedIcon from '@mui/icons-material/ArrowDownwardRounded';
 import EditIcon from '@mui/icons-material/Edit';
 import GrayLine from "../GrayLine/index";
 import storeApi from "../../utils/storeApi";
@@ -222,19 +223,18 @@ export default function CardDetailModal({ show, onHide, card, listId, index }) {
               </div>
             ))}
           </div>
+          <div className="info-for-upload-files">
+            <ArrowDownwardRoundedIcon/>
+            <p>Drag & drop files or browse, than click 'upload' button to upload new files</p>
+          </div>
           <div className="upload-new-files">
             <div className="files-upload">
-              <div className="flex-container files-upload-title">
-                <AttachmentRoundedIcon />
-                <p>Upload Files</p>
-              </div>
               <FilePond
                 files={selectedFiles}
                 allowMultiple={true}
                 onupdatefiles={handleFileInputChange}
               />
             </div>
-            <GrayLine />
             <div className="confirm">
               <Button variant="success" className="button-confirm" onClick={handleSaveFiles} >
                 Upload
