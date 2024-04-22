@@ -204,13 +204,37 @@
 
         .comment-section {
             .comment-section-title {
+                width: 100%;
                 display: inline-flex;
+                align-items: center;
                 grid-gap: 1rem;
+
+                svg {
+                    width: 2rem;
+                    height: 2rem;
+                }
+
+                p {
+                    width: 100%;
+                    background: antiquewhite;
+                    border-radius: 5px;
+                    padding: 0.5rem;
+                    margin: unset;
+                }
             }
 
             .comment-list {
-                margin-top: 1rem;
-                margin-bottom: 4rem;
+                margin: 1.5rem 0;
+
+                .comment-line {
+                    width: 100%;
+                    display: inline-flex;
+                    grid-gap: 0.5rem;
+
+                    .comment {
+                        width: 100%;
+                    }
+                }
             }
 
             .add-comment {
@@ -228,6 +252,12 @@
                 .btn-add-comment {
                     height: 86px;
                 }
+
+                @media (max-width: 768px) {
+                    .ql-toolbar.ql-snow {
+                      padding: unset;
+                    }
+                  }
             }
         }
     }

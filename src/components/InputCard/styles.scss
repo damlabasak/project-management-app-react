@@ -34,6 +34,14 @@
 
         .input-text {
           height: 8rem;
+
+          @media (max-width: 768px) {
+            height: 5rem;
+
+            .ql-toolbar.ql-snow {
+              padding: unset;
+            }
+          }
         }
       }
 

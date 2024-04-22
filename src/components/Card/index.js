@@ -65,7 +65,7 @@ export default function Card({ card, index, listId }) {
             ) : (
               <div className="card-title-container">
                 <p onClick={() => setOpen(!open)} title={card.title}>
-                  {truncateText(card.title, 35)}
+                  {truncateText(card.title, 30)}
                 </p>
                 <div className="icons">
                   <Button className="btn-remove-card" title="Delete card"

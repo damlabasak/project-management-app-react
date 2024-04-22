@@ -13,6 +13,7 @@ import QueryBuilderRoundedIcon from "@mui/icons-material/QueryBuilderRounded";
 import ArrowDownwardRoundedIcon from "@mui/icons-material/ArrowDownwardRounded";
 import SendRoundedIcon from "@mui/icons-material/SendRounded";
 import NotesRoundedIcon from '@mui/icons-material/NotesRounded';
+import Person3Icon from '@mui/icons-material/Person3';
 import EditIcon from "@mui/icons-material/Edit";
 import GrayLine from "../GrayLine/index";
 import storeApi from "../../utils/storeApi";
@@ -330,8 +331,12 @@ export default function CardDetailModal({ show, onHide, card, listId, index }) {
           <div className="comment-list">
             {card.comments && card.comments.length > 0 ? (
               card.comments.map((comment, idx) => (
-                <div className="comment" key={idx}>
-                  <p dangerouslySetInnerHTML={{ __html: comment }}></p>
+                <div className="comment-line">
+                  <Person3Icon/>
+                  <div className="comment" key={idx}>
+                    <p dangerouslySetInnerHTML={{ __html: comment }}></p>
+                  <GrayLine />
+                  </div>
                 </div>
               ))
             ) : (
