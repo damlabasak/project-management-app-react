@@ -38,7 +38,7 @@ export default function Home() {
     });
   }, []);
 
-  const addMoreCard = async (title, description, filesData, dueDate, selectedLabelsData, listId) => {
+  const addMoreCard = async (title, description, filesData, dueDate, selectedLabelsData, comments, listId) => {
     if (!title) {
       return;
     }
@@ -49,7 +49,8 @@ export default function Home() {
       description,
       filesData,
       dueDate,
-      selectedLabelsData
+      selectedLabelsData,
+      comments
     };
     const listRef = doc(db, "lists", listId);
 
@@ -180,6 +181,35 @@ export default function Home() {
     });
   };
 
+  const addComment = async (comment, listId, cardId) => {
+    if (!comment.trim()) {
+      return;
+    }
+  
+    const listRef = doc(db, "lists", listId);
+    const listSnap = await getDoc(listRef);
+  
+    if (!listSnap.exists()) {
+      console.error("List not found");
+      return;
+    }
+  
+    const listData = listSnap.data();
+    const updatedCards = listData.cards.map((card) => {
+      if (card.id === cardId) {
+        return {
+          ...card,
+          comments: [...(card.comments || []), comment]
+        };
+      }
+      return card;
+    });
+  
+    await updateDoc(listRef, {
+      cards: updatedCards,
+    });
+  }; 
+
   const addMoreList = async (title) => {
     if (!title) {
       return;
@@ -280,6 +310,7 @@ export default function Home() {
         updateCardDueDate,
         deleteCardFile,
         addCardFile,
+        addComment,
         deleteList,
       }}
     >

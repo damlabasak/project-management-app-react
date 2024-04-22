@@ -201,5 +201,34 @@
                 }
             }
         }
+
+        .comment-section {
+            .comment-section-title {
+                display: inline-flex;
+                grid-gap: 1rem;
+            }
+
+            .comment-list {
+                margin-top: 1rem;
+                margin-bottom: 4rem;
+            }
+
+            .add-comment {
+                display: inline-flex;
+                align-items: center;
+                grid-gap: 10px;
+
+                .quill {
+                    .ql-container {
+                        max-height: 100px;
+                        overflow: scroll;
+                    }
+                }
+
+                .btn-add-comment {
+                    height: 86px;
+                }
+            }
+        }
     }
 }

@@ -28,6 +28,7 @@ export default function InputCard({ setOpen, listId, type }) {
   const [files, setFiles] = useState([]);
   const [dueDate, setDueDate] = useState("");
   const [selectedLabels, setSelectedLabels] = useState(null);
+  const [comments, setComments] = useState(null);
 
   const handleOnChangeForTitle = (e) => {
     setTitle(e.target.value);
@@ -86,7 +87,7 @@ export default function InputCard({ setOpen, listId, type }) {
     }
 
     if (type === "card") {
-      addMoreCard(title, description, filesData, dueDate, selectedLabelsData, listId);
+      addMoreCard(title, description, filesData, dueDate, selectedLabelsData, comments, listId);
     } else {
       addMoreList(title);
     }

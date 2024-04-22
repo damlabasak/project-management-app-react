@@ -11,6 +11,8 @@ import TocRoundedIcon from "@mui/icons-material/TocRounded";
 import WbIncandescentRoundedIcon from "@mui/icons-material/WbIncandescentRounded";
 import QueryBuilderRoundedIcon from "@mui/icons-material/QueryBuilderRounded";
 import ArrowDownwardRoundedIcon from "@mui/icons-material/ArrowDownwardRounded";
+import SendRoundedIcon from "@mui/icons-material/SendRounded";
+import NotesRoundedIcon from '@mui/icons-material/NotesRounded';
 import EditIcon from "@mui/icons-material/Edit";
 import GrayLine from "../GrayLine/index";
 import storeApi from "../../utils/storeApi";
@@ -29,6 +31,8 @@ export default function CardDetailModal({ show, onHide, card, listId, index }) {
   const [newDueDate, setNewDueDate] = useState(card.dueDate);
   const [updatedFiles, setUpdatedFiles] = useState(card.filesData);
   const [selectedFiles, setSelectedFiles] = useState([]);
+  const [newComment, setNewComment] = useState("");
+
   const datePickerRef = useRef(null);
 
   const {
@@ -37,6 +41,7 @@ export default function CardDetailModal({ show, onHide, card, listId, index }) {
     updateCardDueDate,
     deleteCardFile,
     addCardFile,
+    addComment,
   } = useContext(storeApi);
 
   function formatDate(inputDate) {
@@ -103,6 +108,11 @@ export default function CardDetailModal({ show, onHide, card, listId, index }) {
     }
   };
 
+  const handleAddComment = () => {
+    addComment(newComment, listId, card.id);
+    setNewComment("");
+  };
+
   return (
     <Modal show={show} onHide={onHide} id="cardDetailModal" size="md">
       <Modal.Header>
@@ -162,12 +172,12 @@ export default function CardDetailModal({ show, onHide, card, listId, index }) {
               <div className="card-description">
                 <WbIncandescentRoundedIcon />
                 <ReactQuill
-                      theme="snow"
-                      onChange={(content) => setNewDescription(content)}
-                      value={newDescription}
-                      onBlur={handleDescriptionOnBlur}
-                      placeholder="Write a description..."
-                    />
+                  theme="snow"
+                  onChange={(content) => setNewDescription(content)}
+                  value={newDescription}
+                  onBlur={handleDescriptionOnBlur}
+                  placeholder="Write a description..."
+                />
               </div>
             </div>
             <GrayLine />
@@ -179,8 +189,10 @@ export default function CardDetailModal({ show, onHide, card, listId, index }) {
                 <div className="card-description-container">
                   <div className="card-description">
                     <WbIncandescentRoundedIcon />
-                    <p onClick={() => setOpenDescriptionInput(true)} dangerouslySetInnerHTML={{ __html: card.description }}>
-                    </p>
+                    <p
+                      onClick={() => setOpenDescriptionInput(true)}
+                      dangerouslySetInnerHTML={{ __html: card.description }}
+                    ></p>
                   </div>
                   <Button
                     className="edit-btn"
@@ -240,11 +252,11 @@ export default function CardDetailModal({ show, onHide, card, listId, index }) {
             />
           </div>
           <Button
-              className="duedate-edit edit-btn"
-              onClick={handleEditDueDateClick}
-            >
-              <EditIcon />
-            </Button>
+            className="duedate-edit edit-btn"
+            onClick={handleEditDueDateClick}
+          >
+            <EditIcon />
+          </Button>
         </div>
         <GrayLine />
         <div className="files-preview-title">
@@ -306,6 +318,35 @@ export default function CardDetailModal({ show, onHide, card, listId, index }) {
               onClick={handleSaveFiles}
             >
               Upload
+            </Button>
+          </div>
+        </div>
+        <GrayLine />
+        <div className="comment-section">
+          <div className="comment-section-title">
+            <NotesRoundedIcon/>
+            <p>Comments</p>
+          </div>
+          <div className="comment-list">
+            {card.comments && card.comments.length > 0 ? (
+              card.comments.map((comment, idx) => (
+                <div className="comment" key={idx}>
+                  <p dangerouslySetInnerHTML={{ __html: comment }}></p>
+                </div>
+              ))
+            ) : (
+              <p>No comments yet</p>
+            )}
+          </div>
+          <div className="add-comment">
+            <ReactQuill
+              theme="snow"
+              value={newComment}
+              onChange={(content) => setNewComment(content)}
+              placeholder="Add a comment..."
+            />
+            <Button variant="primary" className="btn-add-comment" onClick={handleAddComment}>
+              <SendRoundedIcon />
             </Button>
           </div>
         </div>
