@@ -2,6 +2,7 @@ import React, { useContext, useState, useRef } from "react";
 import { Modal, Button } from "react-bootstrap";
 import { FilePond } from "react-filepond";
 import DatePicker from "react-datepicker";
+import ReactQuill from "react-quill";
 import FilePreview from "../FilePreview";
 import AttachmentRoundedIcon from "@mui/icons-material/AttachmentRounded";
 import OpenInNewRoundedIcon from "@mui/icons-material/OpenInNewRounded";
@@ -17,6 +18,7 @@ import { storage } from "../../firebase";
 import { ref, uploadBytes, getDownloadURL } from "firebase/storage";
 import { doc } from "firebase/firestore";
 
+import "react-quill/dist/quill.snow.css";
 import "./styles.scss";
 
 export default function CardDetailModal({ show, onHide, card, listId, index }) {
@@ -159,18 +161,13 @@ export default function CardDetailModal({ show, onHide, card, listId, index }) {
             <div className="card-description-container">
               <div className="card-description">
                 <WbIncandescentRoundedIcon />
-                <textarea
-                  value={newDescription}
-                  onChange={(e) => setNewDescription(e.target.value)}
-                  onBlur={handleDescriptionOnBlur}
-                  onKeyPress={(e) => {
-                    if (e.key === "Enter") {
-                      handleDescriptionOnBlur(card.id);
-                    }
-                    return;
-                  }}
-                  autoFocus
-                />
+                <ReactQuill
+                      theme="snow"
+                      onChange={(content) => setNewDescription(content)}
+                      value={newDescription}
+                      onBlur={handleDescriptionOnBlur}
+                      placeholder="Write a description..."
+                    />
               </div>
             </div>
             <GrayLine />
@@ -182,8 +179,7 @@ export default function CardDetailModal({ show, onHide, card, listId, index }) {
                 <div className="card-description-container">
                   <div className="card-description">
                     <WbIncandescentRoundedIcon />
-                    <p onClick={() => setOpenDescriptionInput(true)}>
-                      {card.description}
+                    <p onClick={() => setOpenDescriptionInput(true)} dangerouslySetInnerHTML={{ __html: card.description }}>
                     </p>
                   </div>
                   <Button
