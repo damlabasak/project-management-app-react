@@ -1,6 +1,7 @@
-import React, { useContext, useState } from "react";
+import React, { useContext, useState, useRef } from "react";
 import { Modal, Button } from "react-bootstrap";
 import { FilePond } from "react-filepond";
+import DatePicker from "react-datepicker";
 import FilePreview from "../FilePreview";
 import AttachmentRoundedIcon from "@mui/icons-material/AttachmentRounded";
 import OpenInNewRoundedIcon from "@mui/icons-material/OpenInNewRounded";
@@ -23,10 +24,10 @@ export default function CardDetailModal({ show, onHide, card, listId, index }) {
   const [newTitle, setNewTitle] = useState(card.title);
   const [openDescriptionInput, setOpenDescriptionInput] = useState(false);
   const [newDescription, setNewDescription] = useState(card.description);
-  const [openDueDateInput, setOpenDueDateInput] = useState(false);
   const [newDueDate, setNewDueDate] = useState(card.dueDate);
   const [updatedFiles, setUpdatedFiles] = useState(card.filesData);
   const [selectedFiles, setSelectedFiles] = useState([]);
+  const datePickerRef = useRef(null);
 
   const {
     updateCardTitle,
@@ -35,6 +36,18 @@ export default function CardDetailModal({ show, onHide, card, listId, index }) {
     deleteCardFile,
     addCardFile,
   } = useContext(storeApi);
+
+  function formatDate(inputDate) {
+    const dateObject = new Date(inputDate);
+
+    const year = dateObject.getFullYear();
+    const month = String(dateObject.getMonth() + 1).padStart(2, "0");
+    const day = String(dateObject.getDate()).padStart(2, "0");
+
+    const formattedDate = `${year}-${month}-${day}`;
+
+    return formattedDate;
+  }
 
   const handleTitleOnBlur = () => {
     updateCardTitle(newTitle, index, listId);
@@ -48,7 +61,6 @@ export default function CardDetailModal({ show, onHide, card, listId, index }) {
 
   const handleDueDateOnBlur = () => {
     updateCardDueDate(newDueDate, index, listId);
-    setOpenDueDateInput(false);
   };
 
   const handleOpenLink = (url) => {
@@ -81,6 +93,12 @@ export default function CardDetailModal({ show, onHide, card, listId, index }) {
     }
     addCardFile(filesData, listId, card.id);
     setUpdatedFiles(filesData);
+  };
+
+  const handleEditDueDateClick = () => {
+    if (datePickerRef.current) {
+      datePickerRef.current.setOpen(true);
+    }
   };
 
   return (
@@ -204,41 +222,35 @@ export default function CardDetailModal({ show, onHide, card, listId, index }) {
             )}
           </>
         )}
-        {openDueDateInput ? (
-          <div className="due-date-container">
-            <div className="due-date">
-              <QueryBuilderRoundedIcon />
-              <input
-                type="date"
-                value={newDueDate}
-                onChange={(e) => setNewDueDate(e.target.value)}
-                onBlur={handleDueDateOnBlur}
-                autoFocus
-              />
-            </div>
-            <GrayLine />
+        <div className="due-date-container">
+          <div className="due-date">
+            <QueryBuilderRoundedIcon />
+            <p>Due Date: </p>
+            <DatePicker
+              ref={datePickerRef}
+              selected={
+                newDueDate
+                  ? new Date(newDueDate)
+                  : card.dueDate
+                  ? new Date(card.dueDate)
+                  : null
+              }
+              onSelect={(date) => {
+                setNewDueDate(formatDate(date));
+                handleDueDateOnBlur();
+              }}
+              onBlur={handleDueDateOnBlur}
+              placeholderText=" There is no due date"
+            />
           </div>
-        ) : (
-          <>
-            {card?.dueDate && (
-              <div className="due-date-container">
-                <div className="due-date">
-                  <QueryBuilderRoundedIcon />
-                  <p onClick={() => setOpenDueDateInput(true)}>
-                    Due Date: {card.dueDate}
-                  </p>
-                </div>
-                <Button
-                  className="duedate-edit edit-btn"
-                  onClick={() => setOpenDueDateInput(!openDueDateInput)}
-                >
-                  <EditIcon />
-                </Button>
-                <GrayLine />
-              </div>
-            )}
-          </>
-        )}
+          <Button
+              className="duedate-edit edit-btn"
+              onClick={handleEditDueDateClick}
+            >
+              <EditIcon />
+            </Button>
+        </div>
+        <GrayLine />
         <div className="files-preview-title">
           <AttachmentRoundedIcon />
           <p>Attachments</p>

@@ -149,7 +149,10 @@
         }
         
         .due-date-container {
+            width: 100%;
             align-items: center;
+            display: inline-flex;
+            justify-content: space-between;
         
             p {
                 margin: 0;
@@ -158,6 +161,7 @@
             .due-date {
                 display: inline-flex;
                 grid-gap: 1rem;
+                align-items: center;
         
                 svg {
                     fill: red;
@@ -166,6 +170,10 @@
             
             .duedate-edit {
                 float: right;
+
+                svg {
+                    fill: #568203;
+                }
             }
         }
         
