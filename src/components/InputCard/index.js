@@ -1,6 +1,7 @@
 import React, { useContext, useState } from "react";
 import DatePicker from "react-datepicker";
 import Select from 'react-select';
+import ReactQuill from "react-quill";
 import Button from 'react-bootstrap/Button';
 import storeApi from "../../utils/storeApi";
 import { storage } from "../../firebase";
@@ -20,7 +21,7 @@ import "./styles.scss";
 import 'filepond/dist/filepond.min.css';
 import "react-datepicker/dist/react-datepicker.css";
 
-export default function InputCard({ setOpen, listId, type/* , onSave */ }) {
+export default function InputCard({ setOpen, listId, type }) {
   const { addMoreCard, addMoreList } = useContext(storeApi);
   const [title, setTitle] = useState("");
   const [description, setDescription] = useState("");
@@ -32,8 +33,8 @@ export default function InputCard({ setOpen, listId, type/* , onSave */ }) {
     setTitle(e.target.value);
   };
 
-  const handleOnChangeForDescription = (e) => {
-    setDescription(e.target.value);
+  const handleOnChangeForDescription = (content) => {
+    setDescription(content);
   };
 
   const handleOnChangeForFiles = (files) => {
@@ -171,8 +172,9 @@ export default function InputCard({ setOpen, listId, type/* , onSave */ }) {
             <>
               <div className="flex-container description-container">
                 <WbIncandescentRoundedIcon />
-                <textarea
-                  onChange={handleOnChangeForDescription}
+                <ReactQuill
+                  theme="snow"
+                  onChange={(content) => handleOnChangeForDescription(content)}
                   value={description}
                   maxLength={200}
                   className="input-text card-description"
